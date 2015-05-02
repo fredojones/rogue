@@ -1,0 +1,5 @@
+__pycache__
+\#TODO.org\#
+*.pyc
+*.egg-info
+venv
