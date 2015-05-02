@@ -5,8 +5,7 @@ class World:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.tiles = self.Empty_Tiles(width, height, Tile.clear)
-
+        self.tiles = self.Empty_Tiles(width, height, Tile.floor)
 
     def set_tile(self, x, y, tile):
         """ Set tile at x, y to tile. """
@@ -18,7 +17,11 @@ class World:
             raise IndexError("Tile out of range")
         return self.tiles[y][x]
 
+    def is_wall(self, x, y):
+        """ True if tile at x, y is a wall. """
+        return self.get_tile(x, y) == Tile.wall
+
     @staticmethod
-    def Empty_Tiles(width, height, empty_tile):
-        """ Return width x height matrix filled with empty_tile. """
-        return [[empty_tile for _ in range(width)] for _ in range(height)]
+    def Empty_Tiles(width, height, tile):
+        """ Return width x height matrix filled with tile. """
+        return [[tile for _ in range(width)] for _ in range(height)]

@@ -1,6 +1,5 @@
-from enum import Enum
 
-class Tile(Enum):
+class Tile():
     """ Character representation of each tile. """
     wall  = '#'
     floor = '.'

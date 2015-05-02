@@ -10,4 +10,6 @@ class Camera:
         """ Render world tiles to window. """
         for i in range(self.view.width):
             for j in range(self.view.height):
+                tile = ord(world.get_tile(i, j))
                 window.addch(j, i, ord(world.get_tile(i, j)))
+

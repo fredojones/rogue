@@ -19,8 +19,9 @@ class Game:
                 return
 
     def update(self):
-        key = self.window.getch()
+        self.camera.draw(self.window, self.world)
 
+        key = self.window.getch()
         if key == ord('q'):
             return "quit"
 
