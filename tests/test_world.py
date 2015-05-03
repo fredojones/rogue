@@ -29,3 +29,10 @@ def test_empty_tiles_correct_dimensions(world):
     assert len(tiles[0]) == 10
     assert len(tiles) == 12
     assert tiles[0][0] == Tile.floor
+
+def test_random_floor_tile(world):
+    world.set_tile(10, 12, Tile.floor)
+    p = world.random_floor_tile()
+    assert p.x == 10
+    assert p.y == 12
+
