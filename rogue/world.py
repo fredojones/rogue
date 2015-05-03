@@ -84,7 +84,6 @@ class World(object):
         y -- same for y
         room -- Dictionary {(x, y): Tile} containing room tile info
         """
-
         for (i, j), tile in room.iteritems():
             self.set_tile(i + x, j + y, tile)
 
@@ -96,7 +95,6 @@ class World(object):
         game -- current Game object, representing game state
         key -- key pressed this frame
         """
-
         for entity in self.entities:
             entity.update(game, key)
 
@@ -113,10 +111,9 @@ class World(object):
         Returns dictionary with keys being a tuple (x, y) corresponding
         to the x and y coordinates, and values being the tile at that point.
         """
-
         tiles = {}
-        for x in range(width):
-            for y in range(height):
+        for x in xrange(width):
+            for y in xrange(height):
                 tiles[(x, y)] = tile
 
         return tiles

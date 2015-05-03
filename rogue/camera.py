@@ -20,8 +20,8 @@ class Camera(object):
         world -- current game World object
         """
 
-        for x in range(self.view.width):
-            for y in range(self.view.height):
+        for x in xrange(self.view.width):
+            for y in xrange(self.view.height):
                 window.addch(y, x, ord(world.get_tile(x+self.view.x, y+self.view.y)))
 
         for entity in world.entities:

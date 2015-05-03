@@ -9,8 +9,8 @@ def square_room(width, height):
 
     room = {}
 
-    for x in range(width):
-        for y in range(height):
+    for x in xrange(width):
+        for y in xrange(height):
             # Add the walls on the outside of the room
             if y == 0 or x == 0 or x == width - 1 or y == height - 1:
                 room[(x, y)] = Tile.wall
