@@ -10,7 +10,7 @@ class Game(object):
 
     def __init__(self):
         """ Setup default game. """
-        self.world = World(width=1000, height=1000, tile=Tile.floor)
+        self.world = World.Dungeon_World(width=1000, height=1000)
         self.camera = Camera()
 
         self.player = Player(0, 0)
@@ -20,9 +20,7 @@ class Game(object):
         self.player.x = random_point.x
         self.player.y = random_point.y
 
-        self.camera.center_on(self.player)
-
-        self.world.set_tile(self.player.x-1, self.player.y-1, Tile.wall)
+        self.camera.center_on(self.player, self.world)
 
         if not self.camera.is_visible(self.player):
             raise Exception()

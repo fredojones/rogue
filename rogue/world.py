@@ -1,4 +1,5 @@
 import random
+import room
 from tile import Tile
 from collections import namedtuple
 
@@ -74,6 +75,20 @@ class World(object):
         """ Add entity object to the game. """
         self.entities.append(entity)
 
+    def add_room(self, x, y, room):
+        """ Add room onto game tiles at specified (x, y) with top left
+            corner of the room there.
+
+        Keyword Arguments:
+        x -- x coordinate to add room at (TOP LEFT corner of room)
+        y -- same for y
+        room -- Dictionary {(x, y): Tile} containing room tile info
+        """
+
+        for (i, j), tile in room.iteritems():
+            self.set_tile(i + x, j + y, tile)
+
+
     def update(self, game, key):
         """ Update the world and all entities in it.
 
@@ -106,3 +121,14 @@ class World(object):
 
         return tiles
 
+    @classmethod
+    def Dungeon_World(World, width, height):
+        """ Generate new dungeon with randomly generated rooms.
+
+        Returns new World object.
+        """
+        world = World(width, height)
+
+        world.add_room(10, 10, room.square_room(20, 20))
+
+        return world

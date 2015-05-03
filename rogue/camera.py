@@ -45,10 +45,25 @@ class Camera(object):
         Point = namedtuple("Point", ['x', 'y'])
         return Point(x + self.view.x, y + self.view.y)
 
-    def center_on(self, entity):
-        """ Center camera view on entity object. """
+    def center_on(self, entity, world):
+        """ Center camera view on entity object in world.
+
+        Keyword arguments:
+        entity -- Entity object to center on
+        world -- World object that entity is in, needed to ensure the
+                 camera view remains in bounds. """
         self.view.x = entity.x - int(self.view.width/2)
         self.view.y = entity.y - int(self.view.height/2)
+
+        # Ensure that the camera remains in bounds
+        if self.view.x < 0:
+            self.view.x = 0
+        if self.view.y < 0:
+            self.view.y = 0
+        if self.view.x + self.view.width > world.width:
+            self.view.x = world.width - self.view.width
+        if self.view.y + self.view.height > world.height:
+            self.view.y = world.height - self.view.height
 
     def is_visible(self, entity):
         """ True if entity is onscreen. """

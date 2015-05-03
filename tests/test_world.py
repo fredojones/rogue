@@ -2,10 +2,15 @@ import pytest
 from rogue.world import World
 from rogue.tile import Tile
 from rogue.entity import Entity
+import rogue.room as room
 
 @pytest.fixture
 def world():
     return World(width=100, height=100)
+
+@pytest.fixture
+def dungeon():
+    return World.Dungeon_World(width=100, height=100)
 
 @pytest.fixture
 def entity():
@@ -47,3 +52,12 @@ def test_random_floor_tile_empty_world(world):
 def test_added_entity_becomes_added(world, entity):
     world.add_entity(entity)
     assert entity in world.entities
+
+def test_adding_square_room(world):
+    world.add_room(10, 10, room.square_room(width=10, height=12))
+    assert world.get_tile(10, 10) == Tile.wall
+    assert world.get_tile(11, 11) == Tile.floor
+
+def test_dungeon_world_has_floor_tiles(dungeon):
+    dungeon.random_floor_tile()
+

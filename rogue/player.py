@@ -28,4 +28,4 @@ class Player(Entity):
         if key == ord('.'):
             self.move(self.x + 1, self.y + 1, game.world)
 
-        game.camera.center_on(self)
+        game.camera.center_on(self, game.world)
