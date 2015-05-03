@@ -1,5 +1,5 @@
 
-class Rect:
+class Rect(object):
     """ Generic rectangle class.
 
     Attributes:

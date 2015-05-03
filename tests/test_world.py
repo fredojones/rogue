@@ -1,10 +1,15 @@
 import pytest
 from rogue.world import World
 from rogue.tile import Tile
+from rogue.entity import Entity
 
 @pytest.fixture
 def world():
     return World(width=100, height=100)
+
+@pytest.fixture
+def entity():
+    return Entity(0, 0, Tile.player)
 
 def test_world_initialize(world):
     assert world.width == 100
@@ -39,3 +44,6 @@ def test_random_floor_tile_empty_world(world):
     with pytest.raises(Exception):
         world.random_floor_tile()
 
+def test_added_entity_becomes_added(world, entity):
+    world.add_entity(entity)
+    assert entity in world.entities

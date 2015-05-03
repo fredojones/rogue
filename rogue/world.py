@@ -2,7 +2,7 @@ import random
 from tile import Tile
 from collections import namedtuple
 
-class World:
+class World(object):
     """ Holds information about the current world.
 
     Attributes:
@@ -11,12 +11,14 @@ class World:
     tiles -- dictionary holding the information about tiles in the game
              keys: tuple (x, y) denoting position
              values: Tile object representing tile at that point
+    entities -- list of Entity object in the world
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, tile=Tile.clear):
         self.width = width
         self.height = height
-        self.tiles = self.Empty_Tiles(width, height, Tile.clear)
+        self.tiles = self.Empty_Tiles(width, height, tile)
+        self.entities = []
 
     def set_tile(self, x, y, tile):
         """ Set tile at x, y to tile.
@@ -67,6 +69,21 @@ class World:
             y = random.randint(0, self.height - 1)
             if self.get_tile(x, y) == Tile.floor:
                 return Point(x, y)
+
+    def add_entity(self, entity):
+        """ Add entity object to the game. """
+        self.entities.append(entity)
+
+    def update(self, game, key):
+        """ Update the world and all entities in it.
+
+        Keyword arguments:
+        game -- current Game object, representing game state
+        key -- key pressed this frame
+        """
+
+        for entity in self.entities:
+            entity.update(game, key)
 
 
     @staticmethod
