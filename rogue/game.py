@@ -3,6 +3,8 @@ from world import World
 from camera import Camera
 
 class Game:
+    """ Curses game. Call run with curses.wrapper to start. """
+
     def __init__(self):
         """ Setup default game. """
         self.world = World(width=1000, height=1000)
