@@ -1,3 +1,4 @@
+import random
 from .tile import Tile
 
 class Entity(object):
@@ -6,11 +7,13 @@ class Entity(object):
     Attributes:
     x -- x position in world space
     y -- y position in world space
+    health -- hp left
     tile -- character representing the object
     """
-    def __init__(self, x, y, tile=Tile.clear):
+    def __init__(self, x, y, health=100, tile=Tile.clear):
         self.x = x
         self.y = y
+        self.health = health
         self.tile = tile
 
     def move(self, x, y, world):
@@ -39,6 +42,21 @@ class Entity(object):
         key -- key pressed this frame
         """
         pass
+
+    def attack(self):
+        """ Calculate the attack of the entity. Default to 1 """
+        return 1
+
+    def defense(self):
+        """ Calculate the defense of the entity. Default to 1 """
+        return 1
+
+    def calculate_damage(self, entity):
+        """ Calculate attack damage done to other entity, based on
+            attack and defense.
+        """
+        damage = random.uniform(0.6, 2) * self.attack() - entity.defense()
+        return damage if damage > 0 else 0
 
     def __str__(self):
         return self.tile

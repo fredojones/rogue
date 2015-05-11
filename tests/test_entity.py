@@ -5,7 +5,7 @@ from rogue.tile import Tile
 
 @pytest.fixture
 def entity():
-    return Entity(x=100, y=100)
+    return Entity(x=100, y=100, health=100)
 
 @pytest.fixture
 def world():
@@ -14,6 +14,7 @@ def world():
 def test_entity_initialize(entity):
     assert entity.x == 100
     assert entity.y == 100
+    assert entity.health == 100
 
 def test_move_to_empty_space(entity, world):
     assert entity.move(10, 12, world)
@@ -25,3 +26,7 @@ def test_move_to_occupied_space(entity, world):
     assert not entity.move(10, 12, world)
     assert not entity.x == 10
     assert not entity.y == 12
+
+def test_calculating_damage(entity):
+    damage = entity.calculate_damage(entity)
+    assert damage is not None
