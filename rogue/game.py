@@ -1,9 +1,9 @@
 import curses
-from world import World
-from camera import Camera
-from player import Player
-from tile import Tile
-from debug import debug
+from .world import World
+from .camera import Camera
+from .player import Player
+from .tile import Tile
+from .debug import debug
 
 class Game(object):
     """ Curses game. Call run with curses.wrapper to start. """
