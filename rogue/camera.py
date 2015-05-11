@@ -1,6 +1,6 @@
 from collections import namedtuple
-from rect import Rect
-from debug import debug
+from .rect import Rect
+from .debug import debug
 
 class Camera(object):
     """ Draws the current view to the main game screen.

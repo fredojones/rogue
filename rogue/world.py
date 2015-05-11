@@ -1,6 +1,6 @@
 import random
-import room
-from tile import Tile
+from . import room
+from .tile import Tile
 from collections import namedtuple
 
 class World(object):
@@ -84,7 +84,7 @@ class World(object):
         y -- same for y
         room -- Dictionary {(x, y): Tile} containing room tile info
         """
-        for (i, j), tile in room.iteritems():
+        for (i, j), tile in room.items():
             self.set_tile(i + x, j + y, tile)
 
 
@@ -112,8 +112,8 @@ class World(object):
         to the x and y coordinates, and values being the tile at that point.
         """
         tiles = {}
-        for x in xrange(width):
-            for y in xrange(height):
+        for x in range(width):
+            for y in range(height):
                 tiles[(x, y)] = tile
 
         return tiles

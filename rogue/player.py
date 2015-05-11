@@ -1,5 +1,5 @@
-from entity import Entity
-from tile import Tile
+from .entity import Entity
+from .tile import Tile
 
 class Player(Entity):
     """ Player class controlled by the user.
