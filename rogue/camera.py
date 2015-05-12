@@ -67,7 +67,7 @@ class Camera(object):
 
     def is_visible(self, entity):
         """ True if entity is onscreen. """
-        if (self.view.x < entity.x < self.view.x + self.view.width or
+        if (self.view.x < entity.x < self.view.x + self.view.width and
             self.view.y < entity.y < self.view.y + self.view.height):
             return True
         else:
