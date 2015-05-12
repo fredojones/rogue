@@ -8,9 +8,13 @@ class Entity(object):
     x -- x position in world space
     y -- y position in world space
     health -- hp left
+
     tile -- character representing the object
     solid -- whether entity is solid, i.e. whether this space can be moved into
              by other solid entities
+
+    attack -- attacking power of entity
+    defense -- defensive power of entity
     """
     def __init__(self, x, y, health=100, tile=Tile.clear, solid=False):
         self.x = x
@@ -57,10 +61,12 @@ class Entity(object):
         """
         pass
 
+    @property
     def attack(self):
         """ Calculate the attack of the entity. Default to 1 """
         return 1
 
+    @property
     def defense(self):
         """ Calculate the defense of the entity. Default to 1 """
         return 1
@@ -69,7 +75,7 @@ class Entity(object):
         """ Calculate attack damage done to other entity, based on
             attack and defense.
         """
-        damage = random.uniform(0.6, 2) * self.attack() - entity.defense()
+        damage = random.uniform(0.6, 2) * self.attack - entity.defense
         return damage if damage > 0 else 0
 
     def __str__(self):

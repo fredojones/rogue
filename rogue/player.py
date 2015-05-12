@@ -36,3 +36,8 @@ class Player(Entity):
 
     def add_item(self, item):
         self.items.append(item)
+
+    @property
+    def attack(self):
+        """ Attacking power for in combat. """
+        return 100
