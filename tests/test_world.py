@@ -53,6 +53,12 @@ def test_added_entity_becomes_added(world, entity):
     world.add_entity(entity)
     assert entity in world.entities
 
+def test_getting_entity(world, entity):
+    entity.x = 20
+    entity.y = 24
+    world.add_entity(entity)
+    assert entity is world.get_entity_at(20, 24)
+
 def test_adding_square_room(world):
     world.add_room(10, 10, room.square_room(width=10, height=12))
     assert world.get_tile(10, 10) == Tile.wall

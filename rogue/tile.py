@@ -5,6 +5,6 @@ class Tile():
     floor = '.'
     clear = ' '
     exit  = '<'
-
+    
     enemy = 'g'
     player = '@'

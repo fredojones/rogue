@@ -22,6 +22,11 @@ def test_camera_initialize(camera):
     assert camera.view.height == 100
 
 def test_entity_on_screen(camera, entity):
+    entity.x = 50
+    entity.y = 120
+    assert not camera.is_visible(entity)
+    entity.x = 120
+    entity.y = 50
     assert not camera.is_visible(entity)
     entity.x = 110
     entity.y = 120
@@ -46,8 +51,6 @@ def test_camera_center_on_cant_make_camera_out_of_bounds(camera, entity, world):
 
     assert camera.view.x + camera.view.width <= world.width
     assert camera.view.y + camera.view.height <= world.height
-
-
 
 def test_screen_to_world_coords(camera):
     screen = camera.screen_to_world(80, 50)

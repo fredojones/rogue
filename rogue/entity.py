@@ -9,12 +9,15 @@ class Entity(object):
     y -- y position in world space
     health -- hp left
     tile -- character representing the object
+    solid -- whether entity is solid, i.e. whether this space can be moved into
+             by other solid entities
     """
-    def __init__(self, x, y, health=100, tile=Tile.clear):
+    def __init__(self, x, y, health=100, tile=Tile.clear, solid=False):
         self.x = x
         self.y = y
         self.health = health
         self.tile = tile
+        self.solid = solid
 
     def move(self, x, y, world):
         """ Move to non-wall space x, y, in the world.
@@ -27,12 +30,23 @@ class Entity(object):
         Returns True if moved, False otherwise
         """
 
-        if world.is_wall(x, y):
-            return False
-        else:
+        # Non-solid entities can move anywhere!
+        if not self.solid:
             self.x = x
             self.y = y
             return True
+
+        if world.is_wall(x, y):
+            return False
+
+        # Don't allow movement into solid entity
+        entity = world.get_entity_at(x, y)
+        if entity is not None and entity.solid:
+            return False
+
+        self.x = x
+        self.y = y
+        return True
 
     def update(self, game, key):
         """ Update the entity.
@@ -60,3 +74,4 @@ class Entity(object):
 
     def __str__(self):
         return self.tile
+

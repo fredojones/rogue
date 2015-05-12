@@ -9,7 +9,7 @@ class Player(Entity):
 
     def __init__(self, x, y):
         self.items = []
-        super(Player, self).__init__(x, y, Tile.player)
+        super(Player, self).__init__(x, y, tile=Tile.player, solid=True)
 
     def update(self, game, key):
         """ Update the game for the player, moving them depending

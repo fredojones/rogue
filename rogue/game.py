@@ -1,9 +1,10 @@
 import curses
+from .tile import Tile
 from .world import World
+from .enemy import Enemy
+from .debug import debug
 from .camera import Camera
 from .player import Player
-from .tile import Tile
-from .debug import debug
 
 class Game(object):
     """ Curses game. Call run with curses.wrapper to start. """
@@ -22,8 +23,17 @@ class Game(object):
 
         self.camera.center_on(self.player, self.world)
 
+        # Make sure player is visible
         if not self.camera.is_visible(self.player):
             raise Exception()
+
+        self.enemy = Enemy(0, 0)
+        self.world.add_entity(self.enemy)
+
+        random_point = self.world.random_floor_tile()
+        self.enemy.x = random_point.x
+        self.enemy.y = random_point.y
+
 
     def run(self, window):
         """ Run main curses game with curses window. """

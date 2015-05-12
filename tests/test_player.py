@@ -1,6 +1,7 @@
 import pytest
 from rogue.player import Player
 from rogue.item   import Item
+from rogue.tile   import Tile
 
 @pytest.fixture
 def player():
@@ -10,6 +11,8 @@ def player():
 def item():
     return Item(name='apple', desc='a tasty apple')
 
+def test_player_properly_initialized(player):
+    assert player.tile == Tile.player
 
 def test_adding_items_to_inventory(player):
     player.add_item(item)

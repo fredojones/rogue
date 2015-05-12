@@ -75,6 +75,13 @@ class World(object):
         """ Add entity object to the game. """
         self.entities.append(entity)
 
+    def get_entity_at(self, x, y):
+        """ Get entity at position x, y. If none return None """
+        for entity in self.entities:
+            if entity.x == x and entity.y == y:
+                return entity
+        return None
+
     def add_room(self, x, y, room):
         """ Add room onto game tiles at specified (x, y) with top left
             corner of the room there.
