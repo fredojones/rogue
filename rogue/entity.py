@@ -9,15 +9,17 @@ class Entity(object):
     y -- y position in world space
     health -- hp left
     tile -- character representing the object
-    solid -- whether entity is solid, i.e. whether this space can be moved into
-             by other solid entities
+    solid -- whether entity is solid, i.e. whether this space can be moved
+             into by other solid entities
+    tag -- tag to use to identify types of entity (e.g. 'enemy' or 'player')
     """
-    def __init__(self, x, y, health=100, tile=Tile.clear, solid=False):
+    def __init__(self, x, y, health=100, tile=Tile.clear, solid=False, tag=''):
         self.x = x
         self.y = y
         self.health = health
         self.tile = tile
         self.solid = solid
+        self.tag = tag
 
     def move(self, x, y, world):
         """ Move to non-wall space x, y, in the world.
@@ -55,7 +57,8 @@ class Entity(object):
         game -- current Game object representing game state
         key -- key pressed this frame
         """
-        pass
+        if self.health <= 0:
+            game.world.remove_entity(self)
 
     def attack(self):
         """ Calculate the attack of the entity. Default to 1 """

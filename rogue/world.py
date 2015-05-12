@@ -82,6 +82,10 @@ class World(object):
                 return entity
         return None
 
+    def remove_entity(self, entity):
+        """ Remove given entity from the world. """
+        self.entities.remove(entity)
+
     def add_room(self, x, y, room):
         """ Add room onto game tiles at specified (x, y) with top left
             corner of the room there.

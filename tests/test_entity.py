@@ -3,6 +3,9 @@ from rogue.entity import Entity
 from rogue.world import World
 from rogue.tile import Tile
 
+class Dummy_Game(object):
+    pass
+
 @pytest.fixture
 def entity():
     return Entity(x=100, y=100, health=100, solid=True)
@@ -54,3 +57,13 @@ def test_move_non_solid_entity_into_other_solid_entity(entity, entity2, world):
 def test_calculating_damage(entity):
     damage = entity.calculate_damage(entity)
     assert damage is not None
+
+def test_remove_on_next_update_if_health_negative(entity, world):
+    world.add_entity(entity)
+    assert entity in world.entities
+    entity.health = -1
+    game = Dummy_Game()
+    game.world = world
+    entity.update(game, ' ')
+    assert entity not in world.entities
+
