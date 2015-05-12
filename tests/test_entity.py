@@ -1,6 +1,7 @@
 import pytest
 from rogue.entity import Entity
 from rogue.world import World
+from rogue.item import Item
 from rogue.tile import Tile
 
 class Dummy_Game(object):
@@ -17,6 +18,10 @@ def entity2():
 @pytest.fixture
 def world():
     return World(width=100, height=100)
+
+@pytest.fixture
+def item():
+    return Item(name='apple', desc='a juicy apple')
 
 def test_entity_initialize(entity):
     assert entity.x == 100
@@ -66,4 +71,26 @@ def test_remove_on_next_update_if_health_negative(entity, world):
     game.world = world
     entity.update(game, ' ')
     assert entity not in world.entities
+    
+def test_adding_items_to_inventory(entity, item):
+    entity.add_item(item)
+    entity.add_item(item)
+    entity.add_item(item)
+
+    assert len(entity.items) == 3
+    assert entity.items[0] == item
+
+def test_removing_items_from_inventory(entity):
+    item1 = Item(name='apple')
+    item2 = Item(name='orange')
+    item3 = Item(name='banana')
+
+    entity.add_item(item1)
+    entity.add_item(item2)
+    entity.add_item(item3)
+
+    entity.remove_item(item2)
+    assert len(entity.items) == 2
+    assert entity.items[0] == item1
+    assert entity.items[1] == item3
 

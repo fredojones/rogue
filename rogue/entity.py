@@ -8,10 +8,17 @@ class Entity(object):
     x -- x position in world space
     y -- y position in world space
     health -- hp left
+
     tile -- character representing the object
     solid -- whether entity is solid, i.e. whether this space can be moved
              into by other solid entities
+
     tag -- tag to use to identify types of entity (e.g. 'enemy' or 'player')
+
+    attack -- attacking power of entity
+    defense -- defensive power of entity
+
+    items -- list of items held by entity
     """
     def __init__(self, x, y, health=100, tile=Tile.clear, solid=False, tag=''):
         self.x = x
@@ -20,6 +27,7 @@ class Entity(object):
         self.tile = tile
         self.solid = solid
         self.tag = tag
+        self.items = []
 
     def move(self, x, y, world):
         """ Move to non-wall space x, y, in the world.
@@ -60,10 +68,12 @@ class Entity(object):
         if self.health <= 0:
             game.world.remove_entity(self)
 
+    @property
     def attack(self):
         """ Calculate the attack of the entity. Default to 1 """
         return 1
 
+    @property
     def defense(self):
         """ Calculate the defense of the entity. Default to 1 """
         return 1
@@ -72,8 +82,16 @@ class Entity(object):
         """ Calculate attack damage done to other entity, based on
             attack and defense.
         """
-        damage = random.uniform(0.6, 2) * self.attack() - entity.defense()
+        damage = random.uniform(0.6, 2) * self.attack - entity.defense
         return damage if damage > 0 else 0
+
+    def add_item(self, item):
+        """ Add item to the entity's inventory. """
+        self.items.append(item)
+
+    def remove_item(self, item):
+        """ Remove item from the entity's inventory. """
+        self.items.remove(item)
 
     def __str__(self):
         return self.tile
