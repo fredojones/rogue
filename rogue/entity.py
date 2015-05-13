@@ -15,6 +15,8 @@ class Entity(object):
 
     attack -- attacking power of entity
     defense -- defensive power of entity
+
+    items -- list of items held by entity
     """
     def __init__(self, x, y, health=100, tile=Tile.clear, solid=False):
         self.x = x
@@ -22,6 +24,7 @@ class Entity(object):
         self.health = health
         self.tile = tile
         self.solid = solid
+        self.items = []
 
     def move(self, x, y, world):
         """ Move to non-wall space x, y, in the world.
@@ -77,6 +80,14 @@ class Entity(object):
         """
         damage = random.uniform(0.6, 2) * self.attack - entity.defense
         return damage if damage > 0 else 0
+
+    def add_item(self, item):
+        """ Add item to the entity's inventory. """
+        self.items.append(item)
+
+    def remove_item(self, item):
+        """ Remove item from the entity's inventory. """
+        self.items.remove(item)
 
     def __str__(self):
         return self.tile
