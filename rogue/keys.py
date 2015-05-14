@@ -9,3 +9,5 @@ class Keys:
     up_right = 'o'
     down_left = 'm'
     down_right = '.'
+
+    quit = 'q'

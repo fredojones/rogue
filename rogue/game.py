@@ -1,10 +1,11 @@
 import curses
-from .tile import Tile
-from .world import World
-from .enemy import Enemy
-from .debug import debug
+from .tile   import Tile
+from .world  import World
+from .enemy  import Enemy
+from .debug  import debug
 from .camera import Camera
 from .player import Player
+from .keys   import Keys
 
 class Game(object):
     """ Curses game. Call run with curses.wrapper to start. """
@@ -49,7 +50,7 @@ class Game(object):
         self.camera.draw(self.window, self.world)
 
         key = chr(self.window.getch())
-        if key == 'q':
+        if key == Keys.quit:
             return "quit"
 
         self.world.update(self, key)
