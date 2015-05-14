@@ -1,5 +1,8 @@
 from .entity import Entity
 from .tile import Tile
+from .keys import Keys
+
+from pdb import set_trace
 
 class Player(Entity):
     """ Player class controlled by the user. """
@@ -22,21 +25,21 @@ class Player(Entity):
         """ Update the game for the player, moving them depending
             on the key pressed. """
 
-        if key == ord('i'):
+        if key == Keys.up:
             self.attack_move(self.x, self.y - 1, game.world)
-        if key == ord(','):
+        if key == Keys.down:
             self.attack_move(self.x, self.y + 1, game.world)
-        if key == ord('j'):
+        if key == Keys.left:
             self.attack_move(self.x - 1, self.y, game.world)
-        if key == ord('l'):
+        if key == Keys.right:
             self.attack_move(self.x + 1, self.y, game.world)
-        if key == ord('u'):
+        if key == Keys.up_left:
             self.attack_move(self.x - 1, self.y - 1, game.world)
-        if key == ord('m'):
+        if key == Keys.down_left:
             self.attack_move(self.x - 1, self.y + 1, game.world)
-        if key == ord('o'):
+        if key == Keys.up_right:
             self.attack_move(self.x + 1, self.y - 1, game.world)
-        if key == ord('.'):
+        if key == Keys.down_right:
             self.attack_move(self.x + 1, self.y + 1, game.world)
 
         game.camera.center_on(self, game.world)

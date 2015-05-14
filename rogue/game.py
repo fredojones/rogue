@@ -48,8 +48,8 @@ class Game(object):
     def update(self):
         self.camera.draw(self.window, self.world)
 
-        key = self.window.getch()
-        if key == ord('q'):
+        key = chr(self.window.getch())
+        if key == 'q':
             return "quit"
 
         self.world.update(self, key)
