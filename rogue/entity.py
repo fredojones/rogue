@@ -110,8 +110,11 @@ class Entity(object):
         self.equipment[item.slot] = item
 
     def get_slot(self, slot):
-        """ Get equipment from given slot. """
-        return self.equipment[slot]
+        """ Get equipment from given slot.
+        
+        Returns None if nothing equipped in slot.
+        """
+        return self.equipment.get(slot, None)
 
     def __str__(self):
         return self.tile
