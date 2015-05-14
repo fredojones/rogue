@@ -19,6 +19,7 @@ class Entity(object):
     defense -- defensive power of entity
 
     items -- list of items held by entity
+    equipment -- dictionary of equipped items {"slot": Item}
     """
     def __init__(self, x, y, health=100, tile=Tile.clear, solid=False, tag=''):
         self.x = x
@@ -28,6 +29,7 @@ class Entity(object):
         self.solid = solid
         self.tag = tag
         self.items = []
+        self.equipment = {}
 
     def move(self, x, y, world):
         """ Move to non-wall space x, y, in the world.
@@ -92,6 +94,24 @@ class Entity(object):
     def remove_item(self, item):
         """ Remove item from the entity's inventory. """
         self.items.remove(item)
+
+    def equip(self, item):
+        """ Equip item into slot given by item.slot
+        
+        Also adds item if not already in inventory.
+
+        Raises ValueError if the item isn't an equipment
+        """
+        if not item.equippable:
+            raise ValueError("Item not equippable")
+        if item not in self.items:
+            self.add_item(item)
+
+        self.equipment[item.slot] = item
+
+    def get_slot(self, slot):
+        """ Get equipment from given slot. """
+        return self.equipment[slot]
 
     def __str__(self):
         return self.tile

@@ -57,7 +57,6 @@ class Game(object):
 
 
 
-
 def main():
     game = Game()
     curses.wrapper(game.run)

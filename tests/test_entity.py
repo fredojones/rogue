@@ -23,6 +23,10 @@ def world():
 def item():
     return Item(name='apple', desc='a juicy apple')
 
+@pytest.fixture
+def equipment():
+    return Item(name='sword', desc='a rusty sword', equippable=True, slot='weapon')
+
 def test_entity_initialize(entity):
     assert entity.x == 100
     assert entity.y == 100
@@ -93,4 +97,16 @@ def test_removing_items_from_inventory(entity):
     assert len(entity.items) == 2
     assert entity.items[0] == item1
     assert entity.items[1] == item3
+
+def test_equipping_equipment(entity, equipment):
+    assert equipment not in entity.items
+    assert equipment not in entity.equipment.values()
+    entity.equip(equipment)
+    assert equipment in entity.items
+    assert equipment in entity.equipment.values()
+    assert entity.get_slot(equipment.slot) == equipment
+
+def test_equipping_non_equipment_raises_error(entity, item):
+    with pytest.raises(ValueError): 
+        entity.equip(item)
 
