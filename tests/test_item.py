@@ -10,6 +10,7 @@ def sample_json():
           {
             "name" : "worn axe",
             "kind" : "weapon",
+            "equippable" : "true",
             "stats" : {
               "attack" : 10
             },

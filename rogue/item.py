@@ -33,8 +33,7 @@ class Item:
         self.name = name
         self.desc = desc
         self.kind = kind
-        # needed to cast 'false' to True
-        self.equippable = bool(equippable == True) 
+        self.equippable = equippable
         self.slot = slot
         self.stats = stats
         self.durability = durability
@@ -49,7 +48,13 @@ class Item:
             name = item.get('name')
             desc = item.get('desc')
             kind = item.get('kind')
-            equippable = item.get('equippable')
+            equippable = item.get('equippable').lower()
+            # convert string to boolean
+            if equippable == 'true':
+                equippable = True
+            else:
+                equippable = False
+
             slot = item.get('slot')
             stats = item.get('stats')
             durability = item.get('durability')
