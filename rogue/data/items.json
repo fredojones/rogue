@@ -1,0 +1,21 @@
+
+{
+  "items" : [
+  {
+    "name" : "worn axe",
+    "equipment" : true,
+    "kind" : "weapon",
+    "stats" : {
+      "attack" : 10
+    }
+  },
+  {
+    "name" : "apple",
+    "equipment" : true,
+    "kind" : "food",
+    "stats" : {
+      "hp" : 20
+    }
+  }
+    ]
+}

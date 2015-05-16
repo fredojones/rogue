@@ -21,7 +21,7 @@ def world():
 
 @pytest.fixture
 def item():
-    return Item(name='apple', desc='a juicy apple')
+    return Item(name='apple', desc='a juicy apple', equippable=False)
 
 @pytest.fixture
 def equipment():
