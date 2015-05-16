@@ -48,13 +48,7 @@ class Item:
             name = item.get('name')
             desc = item.get('desc')
             kind = item.get('kind')
-            equippable = item.get('equippable').lower()
-            # convert string to boolean
-            if equippable == 'true':
-                equippable = True
-            else:
-                equippable = False
-
+            equippable = True if item.get('equippable').lower() == 'true' else False
             slot = item.get('slot')
             stats = item.get('stats')
             durability = item.get('durability')
