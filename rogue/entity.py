@@ -21,7 +21,7 @@ class Entity(object):
     items -- list of items held by entity
     equipment -- dictionary of equipped items {"slot": Item}
     """
-    def __init__(self, x, y, health=100, tile=Tile.clear, solid=False, tag=''):
+    def __init__(self, x=0, y=0, health=100, tile=Tile.clear, solid=False, tag=''):
         self.x = x
         self.y = y
         self.health = health
@@ -59,6 +59,12 @@ class Entity(object):
         self.x = x
         self.y = y
         return True
+
+    def random_floor_tile(self, world):
+        """ Place the entity on a random floor tile in the world. """
+        p = world.random_floor_tile()
+        self.x = p.x
+        self.y = p.y
 
     def update(self, game, key):
         """ Update the entity.

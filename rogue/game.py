@@ -16,12 +16,9 @@ class Game(object):
         self.world = World.Dungeon_World(width=1000, height=1000)
         self.camera = Camera()
 
-        self.player = Player(0, 0)
+        self.player = Player()
+        self.player.random_floor_tile(self.world)
         self.world.add_entity(self.player)
-
-        random_point = self.world.random_floor_tile()
-        self.player.x = random_point.x
-        self.player.y = random_point.y
 
         self.camera.center_on(self.player, self.world)
 
@@ -29,12 +26,12 @@ class Game(object):
         if not self.camera.is_visible(self.player):
             raise Exception()
 
-        self.enemy = Enemy(0, 0)
-        self.world.add_entity(self.enemy)
+        # Generate some enemies!
+        for _ in range(10):
+            enemy = Enemy()
+            enemy.random_floor_tile(self.world)
+            self.world.add_entity(enemy)
 
-        random_point = self.world.random_floor_tile()
-        self.enemy.x = random_point.x
-        self.enemy.y = random_point.y
 
     def run(self, window):
         """ Run main curses game with curses window. """
@@ -50,7 +47,7 @@ class Game(object):
         self.camera.draw(self.window, self.world)
 
         # Refresh the messages on screen
-        queue.draw(self.window, 3, 20, 6)
+        queue.draw(self.window, x=3, y=20)
 
         key = chr(self.window.getch())
         if key == Keys.quit:

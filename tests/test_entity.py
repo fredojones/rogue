@@ -110,3 +110,9 @@ def test_equipping_non_equipment_raises_error(entity, item):
     with pytest.raises(ValueError): 
         entity.equip(item)
 
+def test_placing_on_random_floor_tile(entity, world):
+    world.set_tile(10, 12, Tile.floor)
+    p = world.random_floor_tile()
+    entity.random_floor_tile(world)
+    assert entity.x == p.x == 10
+    assert entity.y == p.y == 12

@@ -6,8 +6,8 @@ from .queue  import queue
 class Player(Entity):
     """ Player class controlled by the user. """
 
-    def __init__(self, x, y):
-        super(Player, self).__init__(x, y, tile=Tile.player, solid=True)
+    def __init__(self, x=0, y=0):
+        super().__init__(x, y, tile=Tile.player, solid=True)
 
     def attack_move(self, x, y, world):
         """ Moves as normal but also attacks enemy if enemy is in square
