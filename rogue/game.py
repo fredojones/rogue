@@ -6,6 +6,7 @@ from .debug  import debug
 from .camera import Camera
 from .player import Player
 from .keys   import Keys
+from .queue  import queue
 
 class Game(object):
     """ Curses game. Call run with curses.wrapper to start. """
@@ -35,7 +36,6 @@ class Game(object):
         self.enemy.x = random_point.x
         self.enemy.y = random_point.y
 
-
     def run(self, window):
         """ Run main curses game with curses window. """
         self.window = window
@@ -48,6 +48,9 @@ class Game(object):
 
     def update(self):
         self.camera.draw(self.window, self.world)
+
+        # Refresh the messages on screen
+        queue.draw(self.window, 3, 20, 6)
 
         key = chr(self.window.getch())
         if key == Keys.quit:

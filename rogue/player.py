@@ -1,8 +1,7 @@
 from .entity import Entity
-from .tile import Tile
-from .keys import Keys
-
-from pdb import set_trace
+from .tile   import Tile
+from .keys   import Keys
+from .queue  import queue
 
 class Player(Entity):
     """ Player class controlled by the user. """
@@ -17,7 +16,9 @@ class Player(Entity):
         # Deal damage if moving into enemy
         entity = world.get_entity_at(x, y)
         if entity is not None and entity.tag == 'enemy':
-            entity.health -= self.calculate_damage(entity)
+            damage = self.calculate_damage(entity)
+            entity.health -= damage
+            queue.append("Player hit enemy for {} hp!".format(damage))
 
         self.move(x, y, world)
 

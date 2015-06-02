@@ -1,4 +1,4 @@
-import random
+import random, math
 from .tile import Tile
 
 class Entity(object):
@@ -84,7 +84,7 @@ class Entity(object):
         """ Calculate attack damage done to other entity, based on
             attack and defense.
         """
-        damage = random.uniform(0.6, 2) * self.attack - entity.defense
+        damage = math.floor(random.uniform(0.6, 2) * self.attack - entity.defense)
         return damage if damage > 0 else 0
 
     def add_item(self, item):
