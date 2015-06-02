@@ -7,7 +7,8 @@ class Player(Entity):
     """ Player class controlled by the user. """
 
     def __init__(self, x=0, y=0):
-        super().__init__(x, y, tile=Tile.player, solid=True)
+        super().__init__(x, y, tile=Tile.player, solid=True,
+                         tag='player', name='player')
 
     def attack_move(self, x, y, world):
         """ Moves as normal but also attacks enemy if enemy is in square
@@ -18,7 +19,7 @@ class Player(Entity):
         if entity is not None and entity.tag == 'enemy':
             damage = self.calculate_damage(entity)
             entity.health -= damage
-            queue.append("Player hit enemy for {} hp!".format(damage))
+            queue.append("Player hit {} for {} hp!".format(entity.name, damage))
 
         self.move(x, y, world)
 

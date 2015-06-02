@@ -13,6 +13,7 @@ class Entity(object):
     solid -- whether entity is solid, i.e. whether this space can be moved
              into by other solid entities
 
+    name -- name of the entity
     tag -- tag to use to identify types of entity (e.g. 'enemy' or 'player')
 
     attack -- attacking power of entity
@@ -21,12 +22,14 @@ class Entity(object):
     items -- list of items held by entity
     equipment -- dictionary of equipped items {"slot": Item}
     """
-    def __init__(self, x=0, y=0, health=100, tile=Tile.clear, solid=False, tag=''):
+    def __init__(self, x=0, y=0, health=100, tile=Tile.clear,
+                 solid=False, tag='', name='entity'):
         self.x = x
         self.y = y
         self.health = health
         self.tile = tile
         self.solid = solid
+        self.name = name
         self.tag = tag
         self.items = []
         self.equipment = {}
