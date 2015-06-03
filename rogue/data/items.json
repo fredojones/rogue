@@ -5,6 +5,7 @@
     "name" : "worn axe",
     "equipment" : true,
     "kind" : "weapon",
+    "slot" : "right hand",
     "stats" : {
       "attack" : 10
     }

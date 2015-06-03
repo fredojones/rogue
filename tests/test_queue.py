@@ -1,7 +1,7 @@
 
 from rogue.queue import queue
 
-def test_adding_printing_message():
+def test_adding_and_printing_message():
     queue.append("hello world")
     assert len(queue) == 1
     assert str(queue) == "hello world"

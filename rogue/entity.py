@@ -16,6 +16,7 @@ class Entity(object):
     name -- name of the entity
     tag -- tag to use to identify types of entity (e.g. 'enemy' or 'player')
 
+    level -- level of the entity
     attack -- attacking power of entity
     defense -- defensive power of entity
 
@@ -31,6 +32,11 @@ class Entity(object):
         self.solid = solid
         self.name = name
         self.tag = tag
+
+        self.level = 1
+        self.attack = 1
+        self.defense = 1
+
         self.items = []
         self.equipment = {}
 
@@ -63,6 +69,14 @@ class Entity(object):
         self.y = y
         return True
 
+    def base_damage(self):
+        """ Get base attack damage depending on the weapon equipped. """
+        weapon = self.get_slot("right hand")
+        if weapon is not None:
+            return self.get_slot("right hand").stats["attack"]
+        else:
+            return 10
+
     def random_floor_tile(self, world):
         """ Place the entity on a random floor tile in the world. """
         p = world.random_floor_tile()
@@ -79,22 +93,13 @@ class Entity(object):
         if self.health <= 0:
             game.world.remove_entity(self)
 
-    @property
-    def attack(self):
-        """ Calculate the attack of the entity. Default to 1 """
-        return 1
-
-    @property
-    def defense(self):
-        """ Calculate the defense of the entity. Default to 1 """
-        return 1
-
     def calculate_damage(self, entity):
-        """ Calculate attack damage done to other entity, based on
-            attack and defense.
+        """ Calculate attack damage done to other entity, using
+            Pokémon's algorithm.
         """
-        damage = math.floor(random.uniform(0.6, 2) * self.attack - entity.defense)
-        return damage if damage > 0 else 0
+        return math.floor(((2*self.level+10)/250 * self.attack/entity.defense * \
+                self.base_damage() + 2) * (random.random() * 0.25 + 0.85))
+
 
     def add_item(self, item):
         """ Add item to the entity's inventory. """
@@ -117,6 +122,13 @@ class Entity(object):
             self.add_item(item)
 
         self.equipment[item.slot] = item
+
+    def unequip(self, item):
+        """ Unequip given item. """
+        self.remove_item(item)
+
+        if item.slot in self.equipment:
+            del self.equipment[item.slot]
 
     def get_slot(self, slot):
         """ Get equipment from given slot.

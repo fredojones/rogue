@@ -9,6 +9,7 @@ class Player(Entity):
     def __init__(self, x=0, y=0):
         super().__init__(x, y, tile=Tile.player, solid=True,
                          tag='player', name='player')
+        self.attack = 100
 
     def attack_move(self, x, y, world):
         """ Moves as normal but also attacks enemy if enemy is in square
@@ -48,7 +49,3 @@ class Player(Entity):
 
         super().update(game, key)
 
-    @property
-    def attack(self):
-        """ Attacking power for in combat. """
-        return 100

@@ -30,5 +30,5 @@ class Queue():
         return len(self.messages)
 
 
-""" Module-level global representing default game queue. """
+""" Module-level global representing default message queue. """
 queue = Queue()

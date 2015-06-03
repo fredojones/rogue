@@ -21,11 +21,12 @@ def world():
 
 @pytest.fixture
 def item():
-    return Item(name='apple', desc='a juicy apple', equippable=False)
+    return Item(name='apple', desc='a juicy apple', kind='food', equippable=False)
 
 @pytest.fixture
 def equipment():
-    return Item(name='sword', desc='a rusty sword', equippable=True, slot='weapon')
+    return Item(name='sword', desc='a rusty sword', equippable=True,
+            kind='weapon', slot='right hand', stats={"attack": 100})
 
 def test_entity_initialize(entity):
     assert entity.x == 100
@@ -105,10 +106,20 @@ def test_equipping_equipment(entity, equipment):
     assert equipment in entity.items
     assert equipment in entity.equipment.values()
     assert entity.get_slot(equipment.slot) == equipment
+    entity.unequip(equipment)
+    assert equipment not in entity.items
+    assert equipment not in entity.equipment.values()
+    assert entity.get_slot(equipment.slot) == None
 
 def test_equipping_non_equipment_raises_error(entity, item):
     with pytest.raises(ValueError): 
         entity.equip(item)
+
+def test_calculating_base_damage(entity, equipment):
+    assert entity.base_damage() == 10
+    entity.equip(equipment)
+    assert entity.base_damage() == 100
+    entity.unequip(equipment)
 
 def test_placing_on_random_floor_tile(entity, world):
     world.set_tile(10, 12, Tile.floor)
