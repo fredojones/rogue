@@ -46,7 +46,7 @@ def test_random_floor_tile(world):
     assert p.y == 12
 
 def test_random_floor_tile_empty_world(world):
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         world.random_floor_tile()
 
 def test_added_entity_becomes_added(world, entity):

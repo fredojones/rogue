@@ -60,7 +60,7 @@ class World(object):
         """
 
         if not Tile.floor in self.tiles.values():
-            raise Exception("No floor tile found")
+            raise ValueError("No floor tile found")
 
         Point = namedtuple("Point", ['x', 'y'])
 
