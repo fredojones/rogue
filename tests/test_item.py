@@ -10,7 +10,7 @@ def sample_json():
           {
             "name" : "worn axe",
             "kind" : "weapon",
-            "equippable" : "true",
+            "equippable" : true,
             "stats" : {
               "attack" : 10
             },
@@ -19,7 +19,7 @@ def sample_json():
           {
             "name" : "apple",
             "kind" : "food",
-            "equippable" : "false",
+            "equippable" : false,
             "stats" : {
               "attack" : 1,
               "hp" : 20

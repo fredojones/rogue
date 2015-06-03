@@ -3,16 +3,23 @@
   "items" : [
   {
     "name" : "worn axe",
-    "equipment" : true,
+    "equippable" : true,
     "kind" : "weapon",
-    "slot" : "right hand",
     "stats" : {
       "attack" : 10
     }
   },
   {
+    "name" : "sword of azereon",
+    "equippable" : true,
+    "kind" : "weapon",
+    "stats" : {
+      "attack" : 14
+    }
+  },
+  {
     "name" : "apple",
-    "equipment" : true,
+    "equippable" : true,
     "kind" : "food",
     "stats" : {
       "hp" : 20

@@ -22,7 +22,13 @@ class Entity(object):
 
     items -- list of items held by entity
     equipment -- dictionary of equipped items {"slot": Item}
+
+    Constants:
+    FIST_DAMAGE -- attack power when no weapon equipped
     """
+
+    FIST_DAMAGE = 4
+
     def __init__(self, x=0, y=0, health=100, tile=Tile.clear,
                  solid=False, tag='', name='entity'):
         self.x = x
@@ -33,9 +39,9 @@ class Entity(object):
         self.name = name
         self.tag = tag
 
-        self.level = 1
-        self.attack = 1
-        self.defense = 1
+        self.level = 10
+        self.attack = 10
+        self.defense = 6
 
         self.items = []
         self.equipment = {}
@@ -75,7 +81,7 @@ class Entity(object):
         if weapon is not None:
             return self.get_slot("right hand").stats["attack"]
         else:
-            return 10
+            return self.FIST_DAMAGE
 
     def random_floor_tile(self, world):
         """ Place the entity on a random floor tile in the world. """
@@ -97,8 +103,8 @@ class Entity(object):
         """ Calculate attack damage done to other entity, using
             Pokémon's algorithm.
         """
-        return math.floor(((2*self.level+10)/250 * self.attack/entity.defense * \
-                self.base_damage() + 2) * (random.random() * 0.25 + 0.85))
+        return math.floor((((2*self.level+10)/250) * (self.attack/entity.defense) * \
+                self.base_damage() + 2) * (random.random() * 0.15 + 0.85))
 
 
     def add_item(self, item):

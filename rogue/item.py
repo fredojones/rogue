@@ -29,6 +29,7 @@ class Item:
         if equippable is None: equippable = True
         if slot is None: slot = 'right hand'
         if stats is None: stats = {"attack": 0}
+        if durability is None: durability = 100
 
         self.name = name
         self.desc = desc
@@ -48,7 +49,7 @@ class Item:
             name = item.get('name')
             desc = item.get('desc')
             kind = item.get('kind')
-            equippable = True if item.get('equippable').lower() == 'true' else False
+            equippable = item.get('equippable')
             slot = item.get('slot')
             stats = item.get('stats')
             durability = item.get('durability')

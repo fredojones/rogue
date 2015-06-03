@@ -7,6 +7,7 @@ from .camera import Camera
 from .player import Player
 from .keys   import Keys
 from .queue  import queue
+from .item   import Item
 
 class Game(object):
     """ Curses game. Call run with curses.wrapper to start. """
@@ -16,8 +17,12 @@ class Game(object):
         self.world = World.Dungeon_World(width=1000, height=1000)
         self.camera = Camera()
 
+        # Get all items
+        self.items = Item.get_all_json(open("rogue/data/items.json"))
+
         self.player = Player()
         self.player.random_floor_tile(self.world)
+        self.player.equip(self.items['sword of azereon'])
         self.world.add_entity(self.player)
 
         self.camera.center_on(self.player, self.world)

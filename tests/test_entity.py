@@ -116,7 +116,7 @@ def test_equipping_non_equipment_raises_error(entity, item):
         entity.equip(item)
 
 def test_calculating_base_damage(entity, equipment):
-    assert entity.base_damage() == 10
+    assert entity.base_damage() == entity.FIST_DAMAGE
     entity.equip(equipment)
     assert entity.base_damage() == 100
     entity.unequip(equipment)

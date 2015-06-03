@@ -9,8 +9,7 @@ class Player(Entity):
     def __init__(self, x=0, y=0):
         super().__init__(x, y, tile=Tile.player, solid=True,
                          tag='player', name='player')
-        self.attack = 100
-
+        
     def attack_move(self, x, y, world):
         """ Moves as normal but also attacks enemy if enemy is in square
             being moved to.
@@ -20,7 +19,11 @@ class Player(Entity):
         if entity is not None and entity.tag == 'enemy':
             damage = self.calculate_damage(entity)
             entity.health -= damage
-            queue.append("Player hit {} for {} hp!".format(entity.name, damage))
+            queue.append("player hit {} for {} hp!".format(entity.name, damage))
+            damage = entity.calculate_damage(self)
+            self.health -= damage
+            queue.append("{} hit player for {} hp!".format(entity.name, damage))
+
 
         self.move(x, y, world)
 
