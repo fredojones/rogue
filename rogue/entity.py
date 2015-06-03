@@ -101,10 +101,11 @@ class Entity(object):
 
     def calculate_damage(self, entity):
         """ Calculate attack damage done to other entity, using
-            Pokémon's algorithm.
+            FF's algorithm.
         """
-        return math.floor((((2*self.level+10)/250) * (self.attack/entity.defense) * \
-                self.base_damage() + 2) * (random.random() * 0.15 + 0.85))
+        attacker = self.attack / 2 + self.base_damage()
+        defender = entity.defense
+        return math.floor(((random.random() + 1) * attacker) - defender)
 
 
     def add_item(self, item):
