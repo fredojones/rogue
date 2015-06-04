@@ -1,6 +1,24 @@
 """ Views accessible by key bindings. """
 import curses
 
+def help_inventory(game):
+    """ Print inventory help to screen. """
+    game.window.clear()
+
+    res = """Inventory screen
+
+    e # -- equip item #
+    l # -- examine item #
+
+    # is item number in list
+
+    ? -- this help
+    """
+
+    game.window.addstr(res)
+    game.window.getch()
+
+
 def inventory(game):
     curses.echo()
     curses.curs_set(1)
@@ -22,6 +40,10 @@ def inventory(game):
         if strin == 'q':
             break
 
+        if strin == '?':
+            help_inventory(game)
+            continue
+
         """ Accept a string like 'e 9' to equip the 10th item on the list """
         strin = strin.split()
 
@@ -31,7 +53,6 @@ def inventory(game):
             game.window.addstr(19, 2, 'bad input')
             game.window.getkey()
             continue
-
 
         try:
             if strin[0] == 'e':
@@ -49,6 +70,32 @@ def inventory(game):
 
     curses.noecho()
     curses.curs_set(0)
+
+
+def help_general(game):
+    """ Help in world view. """
+    game.window.clear()
+
+    game.window.addstr(1, 1, "Movement controls:")
+    game.window.addstr(2, 1, "u: up, ul: up left, dr: down right, etc.")
+    
+    game.window.addstr(3, 1, "ul u ur")
+    game.window.addstr(4, 1, "l     r")
+    game.window.addstr(5, 1, "dl d dr")
+
+    game.window.addstr(7, 1, "Corresponds to")
+
+    game.window.addstr(8, 1, "u  i  o")
+    game.window.addstr(9, 1, "j     l")
+    game.window.addstr(10, 1, "m  ,  .")
+
+    game.window.addstr(12, 1, "move towards enemies to attack them")
+    
+    game.window.addstr(14, 1, "press e to enter inventory view")
+    game.window.addstr(15, 1, "press ? for help")
+    game.window.addstr(15, 1, "press q to quit")
+
+    game.window.getch()
 
 
 

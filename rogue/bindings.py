@@ -24,5 +24,6 @@ def get_loot(game):
 
 """ Dictionary between the key to enter a given function. """
 key_functions = {'e': views.inventory,
-                 ';': get_loot}
+                 ';': get_loot,
+                 '?': views.help_general}
 
