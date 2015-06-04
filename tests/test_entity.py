@@ -133,3 +133,11 @@ def test_placing_on_random_floor_tile(entity, world):
     entity.random_floor_tile(world)
     assert entity.x == p.x == 10
     assert entity.y == p.y == 12
+
+def test_generating_loot(entity, item, equipment):
+    entity.add_item(item)
+    assert entity.get_loot()[0] == item
+    entity.add_item(equipment)
+    assert len(entity.get_loot()) > 0
+
+

@@ -145,6 +145,15 @@ class Entity(object):
         """
         return self.equipment.get(slot, None)
 
+    def get_loot(self):
+        """ Get random sublist of entities items. """
+        if len(self.items) == 1:
+            num_loot = 1
+        else:
+            num_loot = random.randint(1, 2)
+
+        return random.sample(self.items, num_loot)
+
     def __str__(self):
         return self.tile
 

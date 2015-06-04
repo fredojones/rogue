@@ -11,7 +11,7 @@ from .item   import Item
 from . import bindings
 
 class Game(object):
-    """ Curses game. Call run with curses.wrapper to start. """
+    """ Main game class. Call run with curses.wrapper to start. """
 
     def __init__(self):
         """ Setup default game. """
