@@ -2,6 +2,7 @@ import pytest
 from rogue.entity import Entity
 from rogue.world import World
 from rogue.item import Item
+from rogue.item import unarmed
 from rogue.tile import Tile
 
 class Dummy_Game(object):
@@ -107,19 +108,24 @@ def test_equipping_equipment(entity, equipment):
     assert equipment in entity.equipment.values()
     assert entity.get_slot(equipment.slot) == equipment
     entity.unequip(equipment)
-    assert equipment not in entity.items
     assert equipment not in entity.equipment.values()
-    assert entity.get_slot(equipment.slot) == None
+    assert entity.get_slot(equipment.slot) == unarmed
 
 def test_equipping_non_equipment_raises_error(entity, item):
     with pytest.raises(ValueError): 
         entity.equip(item)
 
-def test_calculating_base_damage(entity, equipment):
-    assert entity.base_damage() == entity.FIST_DAMAGE
-    entity.equip(equipment)
-    assert entity.base_damage() == 100
-    entity.unequip(equipment)
+def test_adding_fist_to_inventory_raises_value_error(entity):
+    with pytest.raises(ValueError):
+        entity.add_item(unarmed)
+
+def test_equipping_fist_raises_value_error(entity):
+    with pytest.raises(ValueError):
+        entity.equip(unarmed)
+
+def test_unequipping_fist_raises_value_error(entity):
+    with pytest.raises(ValueError):
+        entity.unequip(unarmed)
 
 def test_placing_on_random_floor_tile(entity, world):
     world.set_tile(10, 12, Tile.floor)

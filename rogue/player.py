@@ -17,9 +17,13 @@ class Player(Entity):
         # Deal damage if moving into enemy
         entity = world.get_entity_at(x, y)
         if entity is not None and entity.tag == 'enemy':
+            # Player deals damage
             damage = self.calculate_damage(entity)
             entity.health -= damage
-            queue.append("player hit {} for {} hp!".format(entity.name, damage))
+            queue.append("hit {} with {} for {} hp!".format(entity.name,
+                self.get_slot("right hand").name, damage))
+
+            # Enemy deals damage
             damage = entity.calculate_damage(self)
             self.health -= damage
             queue.append("{} hit player for {} hp!".format(entity.name, damage))

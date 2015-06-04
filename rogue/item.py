@@ -16,7 +16,7 @@ class Item:
 
     stats -- dictionary of item stats, must have attack if equippable
 
-    durability -- how many more hits the item can be used for
+    durability -- how many more hits the item can be used for (-1 if invuln)
     """
 
     def __init__(self, name=None, desc=None, kind=None,
@@ -57,3 +57,7 @@ class Item:
             items[name] = (cls(name, desc, kind, equippable, slot, stats, durability))
        
         return items
+
+unarmed = Item(name='fists', desc='your fists', kind='weapon', equippable=True,
+               slot='right hand', stats={'attack':8}, durability=-1)
+

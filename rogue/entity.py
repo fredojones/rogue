@@ -1,5 +1,6 @@
 import random, math
 from .tile import Tile
+from . import item as _item
 
 class Entity(object):
     """ Base entity class.
@@ -22,12 +23,7 @@ class Entity(object):
 
     items -- list of items held by entity
     equipment -- dictionary of equipped items {"slot": Item}
-
-    Constants:
-    FIST_DAMAGE -- attack power when no weapon equipped
     """
-
-    FIST_DAMAGE = 4
 
     def __init__(self, x=0, y=0, health=100, tile=Tile.clear,
                  solid=False, tag='', name='entity'):
@@ -45,6 +41,9 @@ class Entity(object):
 
         self.items = []
         self.equipment = {}
+
+        # Equip fists
+        self.equipment[_item.unarmed.slot] = _item.unarmed
 
     def move(self, x, y, world):
         """ Move to non-wall space x, y, in the world.
@@ -75,14 +74,6 @@ class Entity(object):
         self.y = y
         return True
 
-    def base_damage(self):
-        """ Get base attack damage depending on the weapon equipped. """
-        weapon = self.get_slot("right hand")
-        if weapon is not None:
-            return self.get_slot("right hand").stats["attack"]
-        else:
-            return self.FIST_DAMAGE
-
     def random_floor_tile(self, world):
         """ Place the entity on a random floor tile in the world. """
         p = world.random_floor_tile()
@@ -103,13 +94,16 @@ class Entity(object):
         """ Calculate attack damage done to other entity, using
             FF's algorithm.
         """
-        attacker = self.attack / 2 + self.base_damage()
+        weapon_damage = self.get_slot("right hand").stats["attack"]
+        attacker = self.attack / 2 + weapon_damage
         defender = entity.defense
         return math.floor(((random.random() + 1) * attacker) - defender)
 
 
     def add_item(self, item):
         """ Add item to the entity's inventory. """
+        if item == _item.unarmed:
+            raise ValueError("Cannot add fists to inventory")
         self.items.append(item)
 
     def remove_item(self, item):
@@ -117,12 +111,15 @@ class Entity(object):
         self.items.remove(item)
 
     def equip(self, item):
-        """ Equip item into slot given by item.slot
+        """ Equip non-fist item into slot given by item.slot
         
-        Also adds item if not already in inventory.
+        Also adds (not unarmed) item if not already in inventory.
 
-        Raises ValueError if the item isn't an equipment
+        Raises ValueError if the item isn't an equipment, or
+        if item == unarmed tries to be equipped
         """
+        if item == _item.unarmed:
+            raise ValueError("Cannot equip fists")
         if not item.equippable:
             raise ValueError("Item not equippable")
         if item not in self.items:
@@ -132,10 +129,14 @@ class Entity(object):
 
     def unequip(self, item):
         """ Unequip given item. """
-        self.remove_item(item)
+        if item == _item.unarmed:
+            raise ValueError("Cannot unequip fists")
 
         if item.slot in self.equipment:
             del self.equipment[item.slot]
+
+        # Rest to fists
+        self.equipment[item.slot] = _item.unarmed
 
     def get_slot(self, slot):
         """ Get equipment from given slot.
