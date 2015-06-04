@@ -157,8 +157,10 @@ class Entity(object):
         """ Get random sublist of entities items. """
         if len(self.items) == 1:
             num_loot = 1
-        else:
+        elif len(self.items) > 1:
             num_loot = random.randint(1, 2)
+        else:
+            return []
 
         return random.sample(self.items, num_loot)
 

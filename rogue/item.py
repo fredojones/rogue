@@ -29,7 +29,7 @@ class Item:
         if equippable is None: equippable = True
         if slot is None: slot = 'right hand'
         if stats is None: stats = {"attack": 0}
-        if durability is None: durability = 100
+        if durability is None: durability = -1
 
         self.name = name
         self.desc = desc

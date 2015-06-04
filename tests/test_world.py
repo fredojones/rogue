@@ -57,7 +57,20 @@ def test_getting_entity(world, entity):
     entity.x = 20
     entity.y = 24
     world.add_entity(entity)
+    entity2 = Entity(x=20, y=24)
+    world.add_entity(entity2)
     assert entity is world.get_entity_at(20, 24)
+
+def test_getting_multuple_entities(world, entity):
+    entity.x = 20
+    entity.y = 24
+    world.add_entity(entity)
+    entity2 = Entity(x=20, y=24)
+    world.add_entity(entity2)
+    assert entity is world.get_entities_at(20, 24)[0]
+    assert entity2 is world.get_entities_at(20, 24)[1]
+
+
 
 def test_adding_square_room(world):
     world.add_room(10, 10, room.square_room(width=10, height=12))

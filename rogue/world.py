@@ -76,11 +76,19 @@ class World(object):
         self.entities.append(entity)
 
     def get_entity_at(self, x, y):
-        """ Get entity at position x, y. If none return None """
+        """ Get first found entity at position x, y. If none return None """
         for entity in self.entities:
             if entity.x == x and entity.y == y:
                 return entity
         return None
+
+    def get_entities_at(self, x, y):
+        """ Get list of entities at position x, y. If none return empty list """
+        result = []
+        for entity in self.entities:
+            if entity.x == x and entity.y == y:
+                result.append(entity)
+        return result
 
     def remove_entity(self, entity):
         """ Remove given entity from the world. """
