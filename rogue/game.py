@@ -8,6 +8,7 @@ from .player import Player
 from .keys   import Keys
 from .queue  import queue
 from .item   import Item
+from . import bindings
 
 class Game(object):
     """ Curses game. Call run with curses.wrapper to start. """
@@ -54,11 +55,16 @@ class Game(object):
         # Refresh the messages on screen
         queue.draw(self.window, x=3, y=20)
 
-        key = chr(self.window.getch())
+        key = self.window.getkey()
         if key == Keys.quit:
             return "quit"
+        
+        fn = bindings.key_functions.get(key)
+        if fn is not None:
+            fn(self)
 
         self.world.update(self, key)
+        self.window.clear()
 
 
 

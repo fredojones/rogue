@@ -20,11 +20,11 @@ class Queue():
 
         # Get the last "lines" messages
         for i, message in enumerate(self.messages[-lines:]):
-            window.addstr(y + i, x, message + "\n")
+            window.addstr(y + i, x, '{}\n'.format(message))
 
 
     def __str__(self):
-        return "\n".join(self.messages)
+        return '\n'.join(self.messages)
 
     def __len__(self):
         return len(self.messages)
