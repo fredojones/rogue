@@ -26,7 +26,8 @@ class Player(Entity):
             # Enemy deals damage
             damage = entity.calculate_damage(self)
             self.health -= damage
-            queue.append("{} hit player for {} hp!".format(entity.name, damage))
+            queue.append("{} hit player with {} for {} hp!".format(entity.name,
+                entity.get_slot("right hand").name, damage))
 
             # New line between each message
             queue.append('\n')

@@ -38,6 +38,7 @@ class Game(object):
             enemy = Enemy()
             enemy.random_floor_tile(self.world)
             self.world.add_entity(enemy)
+            enemy.equip(self.items['rusty knife'])
 
 
     def run(self, window):

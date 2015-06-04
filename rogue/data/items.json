@@ -10,6 +10,14 @@
     }
   },
   {
+    "name" : "rusty knife",
+    "equippable" : true,
+    "kind" : "weapon",
+    "stats" : {
+      "attack" : 8
+    }
+  },
+  {
     "name" : "sword of azereon",
     "equippable" : true,
     "kind" : "weapon",
