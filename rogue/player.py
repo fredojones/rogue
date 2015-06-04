@@ -28,6 +28,9 @@ class Player(Entity):
             self.health -= damage
             queue.append("{} hit player for {} hp!".format(entity.name, damage))
 
+            # New line between each message
+            queue.append('\n')
+
 
         self.move(x, y, world)
 

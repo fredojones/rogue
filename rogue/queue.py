@@ -19,9 +19,8 @@ class Queue():
         """
 
         # Get the last "lines" messages
-        for i, message in enumerate(self.messages[-lines:]):
+        for i, message in enumerate(reversed(self.messages[-lines:])):
             window.addstr(y + i, x, '{}\n'.format(message))
-
 
     def __str__(self):
         return '\n'.join(self.messages)

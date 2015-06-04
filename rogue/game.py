@@ -54,7 +54,7 @@ class Game(object):
         self.camera.draw(self.window, self.world)
 
         # Refresh the messages on screen
-        queue.draw(self.window, x=3, y=20)
+        queue.draw(self.window, x=3, y=20, lines=7)
 
         key = self.window.getkey()
         if key == Keys.quit:
