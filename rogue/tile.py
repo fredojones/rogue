@@ -6,5 +6,6 @@ class Tile():
     clear = ' '
     exit  = '<'
     
+    corpse = ';'
     enemy = 'g'
     player = '@'

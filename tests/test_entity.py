@@ -69,14 +69,14 @@ def test_calculating_damage(entity):
     damage = entity.calculate_damage(entity)
     assert damage is not None
 
-def test_remove_on_next_update_if_health_negative(entity, world):
+def test_entity_becomes_corpse_on_next_update_when_dead(entity, world):
     world.add_entity(entity)
     assert entity in world.entities
     entity.health = -1
     game = Dummy_Game()
     game.world = world
     entity.update(game, ' ')
-    assert entity not in world.entities
+    assert entity.tag == 'corpse'
     
 def test_adding_items_to_inventory(entity, item):
     entity.add_item(item)

@@ -8,6 +8,7 @@ class Entity(object):
     Attributes:
     x -- x position in world space
     y -- y position in world space
+    layer -- draw order, lower gets drawn on top
     health -- hp left
 
     tile -- character representing the object
@@ -26,9 +27,10 @@ class Entity(object):
     """
 
     def __init__(self, x=0, y=0, health=100, tile=Tile.clear,
-                 solid=False, tag='', name='entity'):
+                 solid=False, tag='', name='entity', layer=0):
         self.x = x
         self.y = y
+        self.layer = layer
         self.health = health
         self.tile = tile
         self.solid = solid
@@ -87,8 +89,14 @@ class Entity(object):
         game -- current Game object representing game state
         key -- key pressed this frame
         """
+        # Turn into corpse if entity dies
         if self.health <= 0:
-            game.world.remove_entity(self)
+            self.name = "Corpse of {}".format(self.name)
+            self.solid = False
+            self.tile = Tile.corpse
+            self.tag = "corpse"
+            self.layer = 1
+
 
     def calculate_damage(self, entity):
         """ Calculate attack damage done to other entity, using

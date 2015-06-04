@@ -24,7 +24,7 @@ class Camera(object):
             for y in range(self.view.height):
                 window.addch(y, x, ord(world.get_tile(x+self.view.x, y+self.view.y)))
 
-        for entity in world.entities:
+        for entity in reversed(sorted(world.entities, key=lambda entity: entity.layer)):
             if self.is_visible(entity):
                 pos = self.world_to_screen(entity.x, entity.y)
                 window.addch(pos.y, pos.x, ord(str(entity)))
