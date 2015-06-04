@@ -23,7 +23,7 @@ class Game(object):
 
         self.player = Player()
         self.player.random_floor_tile(self.world)
-        self.player.equip(self.items['sword of azereon'])
+        self.player.equip(self.items['steel longsword'])
         self.player.add_item(self.items['worn axe'])
         self.world.add_entity(self.player)
 

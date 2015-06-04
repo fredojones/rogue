@@ -3,6 +3,8 @@ import curses
 
 def inventory(game):
     curses.echo()
+    curses.curs_set(1)
+
     x, y = 4, 2
     while True:
         game.window.clear()
@@ -18,8 +20,7 @@ def inventory(game):
         strin = game.window.getstr(20, 2).decode().strip()
 
         if strin == 'q':
-            curses.noecho()
-            return
+            break
 
         """ Accept a string like 'e 9' to equip the 10th item on the list """
         strin = strin.split()
@@ -32,14 +33,22 @@ def inventory(game):
             continue
 
 
-        if strin[0] == 'e':
-            try:
+        try:
+            if strin[0] == 'e':
                 # Equip the item selected
                 game.player.equip(game.player.items[int(strin[1])])
-            except IndexError:
-                game.window.addstr(19, 2, 'item number out of range')
+            elif strin[0] == 'l':
+                # Print the item name and description
+                item = game.player.items[int(strin[1])]
+                game.window.addstr(10, 2, '{}\n\n{}'.format(item.name, item.desc))
                 game.window.getkey()
-                continue
+        except IndexError:
+            game.window.addstr(19, 2, 'item number out of range')
+            game.window.getkey()
+            continue
+
+    curses.noecho()
+    curses.curs_set(0)
 
 
 
