@@ -1,16 +1,18 @@
 """ Views accessible by key bindings. """
 import curses
 
+CURSOR = '->'
+
 def help_inventory(game):
     """ Print inventory help to screen. """
     game.window.clear()
 
     res = """Inventory screen
 
-    e # -- equip item #
-    l # -- examine item #
+    up and down to select item
 
-    # is item number in list
+    e to equip item
+    l to examine
 
     ? -- this help
     """
@@ -20,56 +22,68 @@ def help_inventory(game):
 
 
 def inventory(game):
-    curses.echo()
-    curses.curs_set(1)
+    # Offsets for list
+    x, y = 6, 2
+    # Currently selected item
+    selection = 0
+    # Max number of items shown at once
+    max_items = 10
+    # Number of items scrolled through so far
+    scrolled = 0
 
-    x, y = 4, 2
     while True:
         game.window.clear()
 
+        # Draw selection cursor
+        game.window.addstr(y + selection - scrolled, x - 4, CURSOR)
+
+        # Get items between current scroll amount and max_scroll
+        items = list(enumerate(game.player.items))[scrolled:scrolled+max_items]
+
         # List each item in inventory
-        for i, item in enumerate(game.player.items):
-            game.window.addstr(i + y, x, '{}: {}\n'.format(i, item.name))
+        for i, item in items:
+            game.window.addstr(i + y - scrolled, x, '{}: {}\n'.format(i, item.name))
 
             # If equipped, put a little star next to if
             if game.player.get_slot('right hand') == item:
-                game.window.addstr(i + y, x - 2, '*')
+                game.window.addstr(i + y - scrolled, x - 2, '*')
         
-        strin = game.window.getstr(20, 2).decode().strip()
+        key = game.window.getkey()
 
-        if strin == 'q':
+        if key == 'KEY_UP':
+            if selection > 0:
+                selection -= 1
+
+            # If the user tries to go above the screen, scroll up by one
+            if selection < scrolled:
+                scrolled -= 1
+
+
+        if key == 'KEY_DOWN':
+            if selection < len(game.player.items) - 1:
+                selection += 1
+            
+            # If the user tries to go below the screen, scroll down by one
+            if selection > scrolled + max_items - 1:
+                scrolled += 1
+
+
+        if key == 'q':
             break
 
-        if strin == '?':
+        if key == '?':
             help_inventory(game)
             continue
 
-        """ Accept a string like 'e 9' to equip the 10th item on the list """
-        strin = strin.split()
+        if key == 'e':
+            # Equip the item selected
+            game.player.equip(game.player.items[selection])
 
-        try:
-            int(strin[1])
-        except (IndexError, ValueError):
-            game.window.addstr(19, 2, 'bad input')
+        if key == 'l':
+            # Print the item name and description
+            item = game.player.items[int(selection)]
+            game.window.addstr(10, 2, '{}\n\n{}'.format(item.name, item.desc))
             game.window.getkey()
-            continue
-
-        try:
-            if strin[0] == 'e':
-                # Equip the item selected
-                game.player.equip(game.player.items[int(strin[1])])
-            elif strin[0] == 'l':
-                # Print the item name and description
-                item = game.player.items[int(strin[1])]
-                game.window.addstr(10, 2, '{}\n\n{}'.format(item.name, item.desc))
-                game.window.getkey()
-        except IndexError:
-            game.window.addstr(19, 2, 'item number out of range')
-            game.window.getkey()
-            continue
-
-    curses.noecho()
-    curses.curs_set(0)
 
 
 def help_general(game):
@@ -86,8 +100,8 @@ def help_general(game):
     game.window.addstr(7, 1, "Corresponds to")
 
     game.window.addstr(8, 1, "u  i  o")
-    game.window.addstr(9, 1, "j     l")
-    game.window.addstr(10, 1, "m  ,  .")
+    game.window.addstr(9, 1, "j  k  l")
+    game.window.addstr(10, 1, "m     .")
 
     game.window.addstr(12, 1, "move towards enemies to attack them")
     

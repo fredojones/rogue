@@ -1,4 +1,6 @@
 import curses
+from copy import deepcopy
+
 from .tile   import Tile
 from .world  import World
 from .enemy  import Enemy
@@ -9,7 +11,6 @@ from .queue  import queue
 from .item   import Item
 from . import bindings
 
-from .debug   import debug
 
 class Game(object):
     """ Main game class. Call run with curses.wrapper to start. """
@@ -24,8 +25,9 @@ class Game(object):
 
         self.player = Player()
         self.player.random_floor_tile(self.world)
-        self.player.equip(self.items['steel longsword'])
-        self.player.add_item(self.items['worn axe'])
+        self.player.equip(deepcopy(self.items['steel longsword']))
+        for _ in range(19):
+            self.player.add_item(deepcopy(self.items['worn axe']))
         self.world.add_entity(self.player)
 
         self.camera.center_on(self.player, self.world)
