@@ -1,9 +1,9 @@
 
 class Keys:
     """ List of key inputs for the game. """
-    up = 'k'
-    down = 'j'
-    left = 'h'
+    up = 'i'
+    down = 'k'
+    left = 'j'
     right = 'l'
     up_left = 'u'
     up_right = 'o'
