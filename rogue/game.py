@@ -2,13 +2,14 @@ import curses
 from .tile   import Tile
 from .world  import World
 from .enemy  import Enemy
-from .debug  import debug
 from .camera import Camera
 from .player import Player
 from .keys   import Keys
 from .queue  import queue
 from .item   import Item
 from . import bindings
+
+from .debug   import debug
 
 class Game(object):
     """ Main game class. Call run with curses.wrapper to start. """
@@ -58,12 +59,14 @@ class Game(object):
         queue.draw(self.window, x=3, y=20, lines=7)
 
         key = self.window.getkey()
-        if key == Keys.quit:
-            return "quit"
-        
+       
+        # Get function depending on key pressed
         fn = bindings.key_functions.get(key)
+        # Only execute if function exists for that key
         if fn is not None:
-            fn(self)
+            res = fn(self)
+            if res == 'quit':
+                return 'quit'
 
         self.world.update(self, key)
         self.window.clear()

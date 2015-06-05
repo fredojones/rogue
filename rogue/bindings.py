@@ -1,6 +1,7 @@
 """ Assign keys to functions. """
 from . import views
 from .queue import queue
+from .keys import Keys
 
 def get_loot(game):
     """ Get loot from corpse. """
@@ -22,8 +23,12 @@ def get_loot(game):
 
     corpse.items.clear()
 
+def quit(game):
+    return 'quit'
+
 """ Dictionary between the key to enter a given function. """
 key_functions = {'e': views.inventory,
                  ';': get_loot,
-                 '?': views.help_general}
+                 '?': views.help_general,
+                 'q': quit}
 
