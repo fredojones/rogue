@@ -1,3 +1,4 @@
+import random
 from .entity import Entity
 from .tile   import Tile
 from .keys   import Keys
@@ -28,6 +29,17 @@ class Player(Entity):
             self.health -= damage
             queue.append("{} hit player with {} for {} hp!".format(entity.name,
                 entity.get_slot("right hand").name, damage))
+
+            # If entity dies, gain exp
+            if entity.health <= 0:
+                exp = random.randint(15, 250)
+                queue.append("gained {} exp".format(exp))
+
+                # Check if player has levelled up
+                old_level = self.level()
+                self.exp += exp
+                if self.level() > old_level:
+                    queue.append("ding! You are now level {}".format(self.level()))
 
             # New line between each message
             queue.append('\n')

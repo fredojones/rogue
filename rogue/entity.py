@@ -131,7 +131,7 @@ class Entity(object):
 
 
     def calculate_damage(self, entity):
-        """ Calculate attack damage done to other entity, using
+        """ Calculate attack damage done to other entity, using modified
             FF's algorithm.
         """
         weapon_damage = self.get_slot("right hand").stats["attack"]
