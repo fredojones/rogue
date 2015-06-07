@@ -18,8 +18,9 @@ class Entity(object):
     name -- name of the entity
     tag -- tag to use to identify types of entity (e.g. 'enemy' or 'player')
 
-    level -- level of the entity
-    attack -- attacking power of entity
+    exp -- current experience of the entity
+    levels -- list containing how much exp is needed for each level
+
     defense -- defensive power of entity
 
     items -- list of items held by entity
@@ -37,7 +38,15 @@ class Entity(object):
         self.name = name
         self.tag = tag
 
-        self.level = 10
+        # Default levelling scale
+        difference = 10
+        self.levels = []
+
+        for level in range(1000):
+            self.levels.append(level**2 * difference)
+
+        self.exp = self.levels[10]
+
         self.attack = 10
         self.defense = 6
 
@@ -46,6 +55,29 @@ class Entity(object):
 
         # Equip fists
         self.equipment[_item.unarmed.slot] = _item.unarmed
+
+    def level(self):
+        """ Calculate the entities level from current exp.
+        
+        Return the level for which the entities current exp is greater than
+        (or equal to) that level, but less than is required for the level
+        above it. If the current exp is higher than any level, return the
+        highest level.
+
+        Raises ValueError if self.exp is negative
+        """
+
+        if self.exp < 0:
+            raise ValueError("exp must be positive")
+
+        if self.exp >= self.levels[len(self.levels) - 1]:
+            return len(self.levels) - 1
+
+        for level, exp_needed in enumerate(self.levels):
+            if self.exp >= exp_needed and self.exp < self.levels[level + 1]:
+                return level
+
+        return 0
 
     def move(self, x, y, world):
         """ Move to non-wall space x, y, in the world.
@@ -103,7 +135,7 @@ class Entity(object):
             FF's algorithm.
         """
         weapon_damage = self.get_slot("right hand").stats["attack"]
-        attacker = self.attack / 2 + weapon_damage
+        attacker = self.level() / 2 + weapon_damage
         defender = entity.defense
         return math.floor(((random.random() + 1) * attacker) - defender)
 
@@ -143,7 +175,7 @@ class Entity(object):
         if item.slot in self.equipment:
             del self.equipment[item.slot]
 
-        # Rest to fists
+        # Reset to fists
         self.equipment[item.slot] = _item.unarmed
 
     def get_slot(self, slot):

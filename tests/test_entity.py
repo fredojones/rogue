@@ -140,4 +140,14 @@ def test_generating_loot(entity, item, equipment):
     entity.add_item(equipment)
     assert len(entity.get_loot()) > 0
 
+def test_getting_current_level_with_default_scaling(entity):
+    entity.exp = 100
+    assert entity.level() == 3
+    entity.exp = 10000000000000
+    assert entity.level() == 999
+
+def test_getting_current_level_with_any_scaling(entity):
+    for i, exp in enumerate(entity.levels):
+        entity.exp = exp
+        assert entity.level() == i
 
