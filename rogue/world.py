@@ -51,12 +51,12 @@ class World(object):
         return self.get_tile(x, y) == Tile.wall
 
     def random_floor_tile(self):
-        """ Return position of a random floor tile in the game world.
+        """ Return position of a random unoccupied floor tile in the world.
 
         Returns a namedtuple with attributes (x, y) corresponding to the
-        position of the floor tile.
+        position of the unoccupied floor tile (a floor tile without an entity on it).
 
-        Raise Exception if no floor tile found.
+        Raise Exception if no unoccupied floor tile found.
         """
 
         if not Tile.floor in self.tiles.values():
@@ -64,12 +64,19 @@ class World(object):
 
         Point = namedtuple("Point", ['x', 'y'])
 
-        # Keep taking random choice of tiles to see if it is a floor tile
-        while True:
-            x = random.randint(0, self.width - 1)
-            y = random.randint(0, self.height - 1)
-            if self.get_tile(x, y) == Tile.floor:
-                return Point(x, y)
+        # Get list all unoccupied floor tiles positions (floor tiles
+        # with no entities on them)
+        floor_tiles = []
+        for (x, y), tile in self.tiles.items():
+            if tile == Tile.floor and self.get_entity_at(x, y) == None:
+                floor_tiles.append(Point(x, y))
+
+        if len(floor_tiles) == 0:
+            raise ValueError("No unoccupied floor tiles")
+
+        # Take random unoccupied floor tile
+        return random.choice(floor_tiles)
+
 
     def add_entity(self, entity):
         """ Add entity object to the game. """

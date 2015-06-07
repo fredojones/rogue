@@ -49,6 +49,23 @@ def test_random_floor_tile_empty_world(world):
     with pytest.raises(ValueError):
         world.random_floor_tile()
 
+def test_random_floor_tile_occupied_space(world, entity):
+    entity.x = 10
+    entity.y = 12
+    world.add_entity(entity)
+    world.set_tile(10, 12, Tile.floor)
+    world.set_tile(11, 12, Tile.floor)
+
+    # Should choose tile (11, 12), the only unoccupied option
+    p = world.random_floor_tile()
+    assert p.x == 11
+    assert p.y == 12
+
+    # Should raise exception if only occupied space available
+    world.set_tile(11, 12, Tile.wall)
+    with pytest.raises(ValueError):
+        world.random_floor_tile()
+
 def test_added_entity_becomes_added(world, entity):
     world.add_entity(entity)
     assert entity in world.entities
@@ -61,7 +78,7 @@ def test_getting_entity(world, entity):
     world.add_entity(entity2)
     assert entity is world.get_entity_at(20, 24)
 
-def test_getting_multuple_entities(world, entity):
+def test_getting_multiple_entities(world, entity):
     entity.x = 20
     entity.y = 24
     world.add_entity(entity)
@@ -69,8 +86,6 @@ def test_getting_multuple_entities(world, entity):
     world.add_entity(entity2)
     assert entity is world.get_entities_at(20, 24)[0]
     assert entity2 is world.get_entities_at(20, 24)[1]
-
-
 
 def test_adding_square_room(world):
     world.add_room(10, 10, room.square_room(width=10, height=12))
