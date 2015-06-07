@@ -114,8 +114,10 @@ class World(object):
         game -- current Game object, representing game state
         key -- key pressed this frame
         """
+        # Don't update dead entities
         for entity in self.entities:
-            entity.update(game, key)
+            if not entity.dead:
+                entity.update(game, key)
 
 
     @staticmethod

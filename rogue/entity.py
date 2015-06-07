@@ -11,6 +11,8 @@ class Entity(object):
     layer -- draw order, lower gets drawn on top
     health -- hp left
 
+    dead -- whether or not entity should update
+
     tile -- character representing the object
     solid -- whether entity is solid, i.e. whether this space can be moved
              into by other solid entities
@@ -37,6 +39,8 @@ class Entity(object):
         self.solid = solid
         self.name = name
         self.tag = tag
+
+        self.dead = False
 
         # Default levelling scale
         difference = 10
@@ -128,7 +132,7 @@ class Entity(object):
             self.tile = Tile.corpse
             self.tag = "corpse"
             self.layer = 1
-
+            self.dead = True
 
     def calculate_damage(self, entity):
         """ Calculate attack damage done to other entity, using modified
@@ -138,7 +142,6 @@ class Entity(object):
         attacker = self.level() / 2 + weapon_damage
         defender = entity.defense
         return math.floor(((random.random() + 1) * attacker) - defender)
-
 
     def add_item(self, item):
         """ Add item to the entity's inventory. """
