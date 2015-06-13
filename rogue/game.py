@@ -23,11 +23,11 @@ class Game(object):
         # Get all items
         self.items = Item.get_all_json(open("rogue/data/items.json"))
 
+        # Player setup
         self.player = Player()
         self.player.random_floor_tile(self.world)
         self.player.equip(deepcopy(self.items['steel longsword']))
-        for _ in range(19):
-            self.player.add_item(deepcopy(self.items['worn axe']))
+        self.player.add_item(deepcopy(self.items['worn axe']))
         self.world.add_entity(self.player)
 
         self.camera.center_on(self.player, self.world)

@@ -55,7 +55,7 @@ def inventory(game):
         
         key = game.window.getkey()
 
-        if key == 'KEY_UP':
+        if key == 'k':
             if selection > 0:
                 selection -= 1
 
@@ -64,7 +64,7 @@ def inventory(game):
                 scrolled -= 1
 
 
-        if key == 'KEY_DOWN':
+        if key == 'j':
             if selection < len(game.player.items) - 1:
                 selection += 1
             
