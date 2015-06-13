@@ -28,6 +28,7 @@ def quit(game):
 
 """ Dictionary between the key to enter a given function. """
 key_functions = {'e': views.inventory,
+                 'c': views.character,
                  ';': get_loot,
                  '?': views.help_general,
                  'q': quit}

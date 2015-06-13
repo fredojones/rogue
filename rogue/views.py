@@ -22,7 +22,12 @@ def help_inventory(game):
 
 
 def inventory(game):
-    # Offsets for list
+    """ Display the game inventory.
+
+    Allows player to manipulate items and equipment etc.
+    """
+
+    # Offset for displaying list on-screen
     x, y = 6, 2
     # Currently selected item
     selection = 0
@@ -85,6 +90,22 @@ def inventory(game):
             game.window.addstr(10, 2, '{}\n\n{}'.format(item.name, item.desc))
             game.window.getkey()
 
+def character(game):
+    """ Display information about the player character. """
+
+    while True:
+        game.window.clear()
+
+        game.window.addstr('{} the level {} adventurer'.format(game.player.name,
+            game.player.level()))
+
+        game.window.addstr('\n\nWielding a {} in the right hand'.format(
+            game.player.get_slot('right hand').name))
+
+        key = game.window.getkey()
+
+        if key == 'q':
+            break
 
 def help_general(game):
     """ Help in world view. """

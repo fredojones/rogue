@@ -37,11 +37,11 @@ class Game(object):
             raise Exception()
 
         # Generate some enemies!
-        for _ in range(10):
+        for _ in range(5):
             enemy = Enemy()
             enemy.random_floor_tile(self.world)
             self.world.add_entity(enemy)
-            enemy.equip(self.items['rusty knife'])
+            enemy.equip(deepcopy(self.items['rusty knife']))
 
 
     def run(self, window):
