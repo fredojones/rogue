@@ -30,8 +30,8 @@
   },
   {
     "name" : "apple",
-    "desc" : "A rough, powerdery apple",
-    "equippable" : true,
+    "desc" : "A rough, powdery apple",
+    "equippable" : false,
     "kind" : "food",
     "stats" : {
       "hp" : 20

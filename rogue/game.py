@@ -28,6 +28,7 @@ class Game(object):
         self.player.random_floor_tile(self.world)
         self.player.equip(deepcopy(self.items['steel longsword']))
         self.player.add_item(deepcopy(self.items['worn axe']))
+        self.player.add_item(deepcopy(self.items['apple']))
         self.world.add_entity(self.player)
 
         self.camera.center_on(self.player, self.world)

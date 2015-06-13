@@ -197,6 +197,7 @@ class Entity(object):
             raise ValueError("Cannot eat non-food item")
        
         self.health += item.stats['hp']
+        self.remove_item(item)
 
     def get_slot(self, slot):
         """ Get equipment from given slot.

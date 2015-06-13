@@ -35,17 +35,18 @@ def inventory(game):
     max_items = 10
     # Number of items scrolled through so far
     scrolled = 0
+    # Offset for messages
+    x_msg, y_msg = 2, max_items + 4
 
+    game.window.clear()
     while True:
-        game.window.clear()
-
         # Draw selection cursor
         game.window.addstr(y + selection - scrolled, x - 4, CURSOR)
 
-        # Get items between current scroll amount and max_scroll
+        # Get items between current scroll amount and max_items
         items = list(enumerate(game.player.items))[scrolled:scrolled+max_items]
 
-        # List each item in inventory
+        # Print each item in inventory
         for i, item in items:
             game.window.addstr(i + y - scrolled, x, '{}: {}\n'.format(i, item.name))
 
@@ -63,6 +64,7 @@ def inventory(game):
             if selection < scrolled:
                 scrolled -= 1
 
+            game.window.clear()
 
         if key == 'j':
             if selection < len(game.player.items) - 1:
@@ -72,6 +74,32 @@ def inventory(game):
             if selection > scrolled + max_items - 1:
                 scrolled += 1
 
+            game.window.clear()
+
+        if key == 'e':
+            # Equip the selected item
+            if game.player.items[selection].equippable:
+                game.player.equip(game.player.items[selection])
+                game.window.clear()
+            else:
+                game.window.addstr(y_msg, x_msg, "Cannot equip non-equippable item")
+
+        if key == 'c':
+            # Eat the selected item
+            if game.player.items[selection].kind == 'food':
+                heal = game.player.items[selection].stats['hp']
+                game.player.eat(game.player.items[selection])
+
+                # Put selection cursor back to an item
+                selection -= 1
+                game.window.clear()
+            else:
+                game.window.addstr(y_msg, x_msg, "Cannot eat non-food item")
+
+        if key == 'l':
+            # Print the item name and description
+            item = game.player.items[int(selection)]
+            game.window.addstr(y_msg, x_msg, '{}\n\n{}'.format(item.name, item.desc))
 
         if key == 'q':
             break
@@ -79,16 +107,6 @@ def inventory(game):
         if key == '?':
             help_inventory(game)
             continue
-
-        if key == 'e':
-            # Equip the selected item
-            game.player.equip(game.player.items[selection])
-
-        if key == 'l':
-            # Print the item name and description
-            item = game.player.items[int(selection)]
-            game.window.addstr(10, 2, '{}\n\n{}'.format(item.name, item.desc))
-            game.window.getkey()
 
 def character(game):
     """ Display information about the player character. """
@@ -101,6 +119,8 @@ def character(game):
 
         game.window.addstr('\n\nWielding a {} in the right hand'.format(
             game.player.get_slot('right hand').name))
+
+        game.window.addstr('\n\n{} hp'.format(game.player.health))
 
         key = game.window.getkey()
 

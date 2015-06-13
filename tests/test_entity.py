@@ -152,11 +152,12 @@ def test_getting_current_level_with_any_scaling(entity):
         entity.exp = exp
         assert entity.level() == i
 
-def test_eating_food(entity, item):
+def test_eating_food_increases_health_and_destroys_item(entity, item):
     old_health = entity.health
     entity.add_item(item)
     entity.eat(item)
     assert entity.health == old_health + item.stats['hp']
+    assert item not in entity.items
 
 def test_eating_non_food_raises_value_error(entity, equipment):
     entity.add_item(equipment)
