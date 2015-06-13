@@ -1,5 +1,5 @@
 import pytest
-from rogue.entity import Entity
+from rogue.entity import Entity, InventoryError, EquipmentError
 from rogue.world import World
 from rogue.item import Item
 from rogue.item import unarmed
@@ -22,7 +22,8 @@ def world():
 
 @pytest.fixture
 def item():
-    return Item(name='apple', desc='a juicy apple', kind='food', equippable=False)
+    return Item(name='apple', desc='a juicy apple', kind='food', equippable=False,
+            stats={"hp": 50})
 
 @pytest.fixture
 def equipment():
@@ -112,19 +113,19 @@ def test_equipping_equipment(entity, equipment):
     assert entity.get_slot(equipment.slot) == unarmed
 
 def test_equipping_non_equipment_raises_error(entity, item):
-    with pytest.raises(ValueError): 
+    with pytest.raises(EquipmentError): 
         entity.equip(item)
 
-def test_adding_fist_to_inventory_raises_value_error(entity):
-    with pytest.raises(ValueError):
+def test_adding_fist_to_inventory_raises_error(entity):
+    with pytest.raises(InventoryError):
         entity.add_item(unarmed)
 
-def test_equipping_fist_raises_value_error(entity):
-    with pytest.raises(ValueError):
+def test_equipping_fist_raises_error(entity):
+    with pytest.raises(EquipmentError):
         entity.equip(unarmed)
 
-def test_unequipping_fist_raises_value_error(entity):
-    with pytest.raises(ValueError):
+def test_unequipping_fist_raises_error(entity):
+    with pytest.raises(EquipmentError):
         entity.unequip(unarmed)
 
 def test_placing_on_random_floor_tile(entity, world):
@@ -151,3 +152,23 @@ def test_getting_current_level_with_any_scaling(entity):
         entity.exp = exp
         assert entity.level() == i
 
+def test_eating_food(entity, item):
+    old_health = entity.health
+    entity.add_item(item)
+    entity.eat(item)
+    assert entity.health == old_health + item.stats['hp']
+
+def test_eating_non_food_raises_value_error(entity, equipment):
+    entity.add_item(equipment)
+    with pytest.raises(ValueError):
+        entity.eat(equipment) 
+
+def test_eating_food_not_in_inventory_raises_error(entity, item):
+    with pytest.raises(InventoryError):
+        entity.eat(item) 
+
+def test_raises_key_error_if_food_doesnt_have_hp_stat(entity, item):
+    del item.stats['hp']
+    with pytest.raises(KeyError):
+        entity.add_item(item)
+        entity.eat(item)

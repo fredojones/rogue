@@ -2,6 +2,14 @@ import random, math
 from .tile import Tile
 from . import item as _item
 
+class InventoryError(Exception):
+    """ Raised on inventory related errors. """
+    pass
+
+class EquipmentError(Exception):
+    """ Raised on equipment related errors. """
+    pass
+
 class Entity(object):
     """ Base entity class.
 
@@ -146,7 +154,7 @@ class Entity(object):
     def add_item(self, item):
         """ Add item to the entity's inventory. """
         if item == _item.unarmed:
-            raise ValueError("Cannot add fists to inventory")
+            raise InventoryError("Cannot add fists to inventory")
         self.items.append(item)
 
     def remove_item(self, item):
@@ -162,9 +170,9 @@ class Entity(object):
         if item == unarmed tries to be equipped
         """
         if item == _item.unarmed:
-            raise ValueError("Cannot equip fists")
+            raise EquipmentError("Cannot equip fists")
         if not item.equippable:
-            raise ValueError("Item not equippable")
+            raise EquipmentError("Item not equippable")
         if item not in self.items:
             self.add_item(item)
 
@@ -173,13 +181,22 @@ class Entity(object):
     def unequip(self, item):
         """ Unequip given item. """
         if item == _item.unarmed:
-            raise ValueError("Cannot unequip fists")
+            raise EquipmentError("Cannot unequip fists")
 
         if item.slot in self.equipment:
             del self.equipment[item.slot]
 
         # Reset to fists
         self.equipment[item.slot] = _item.unarmed
+
+    def eat(self, item):
+        """ Eat the given object with kind='food' raising the player's hp. """
+        if item not in self.items:
+            raise InventoryError("Food must be in inventory to be eaten")
+        if item.kind != 'food':
+            raise ValueError("Cannot eat non-food item")
+       
+        self.health += item.stats['hp']
 
     def get_slot(self, slot):
         """ Get equipment from given slot.

@@ -49,7 +49,7 @@ def inventory(game):
         for i, item in items:
             game.window.addstr(i + y - scrolled, x, '{}: {}\n'.format(i, item.name))
 
-            # If equipped, put a little star next to if
+            # If equipped, put a little star next to the item
             if game.player.get_slot('right hand') == item:
                 game.window.addstr(i + y - scrolled, x - 2, '*')
         
@@ -81,7 +81,7 @@ def inventory(game):
             continue
 
         if key == 'e':
-            # Equip the item selected
+            # Equip the selected item
             game.player.equip(game.player.items[selection])
 
         if key == 'l':
