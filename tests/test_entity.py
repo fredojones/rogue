@@ -173,3 +173,25 @@ def test_raises_key_error_if_food_doesnt_have_hp_stat(entity, item):
     with pytest.raises(KeyError):
         entity.add_item(item)
         entity.eat(item)
+
+def test_adding_health(entity):
+    entity.health = entity.max_health
+    old_health = entity.health
+
+    entity.add_health(-10)
+    assert entity.health == old_health - 10
+    entity.add_health(6)
+    assert entity.health == old_health - 4
+
+def test_adding_above_max_health(entity):
+    entity.health = entity.max_health
+    old_health = entity.health
+
+    entity.add_health(10)
+    assert entity.health == old_health
+    entity.add_health(-4)
+    entity.add_health(10)
+    assert entity.health == old_health
+
+
+

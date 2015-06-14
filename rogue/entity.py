@@ -18,6 +18,7 @@ class Entity(object):
     y -- y position in world space
     layer -- draw order, lower gets drawn on top
     health -- hp left
+    max_health -- maximum hp the entity can have
 
     dead -- whether or not entity should update
 
@@ -37,7 +38,7 @@ class Entity(object):
     equipment -- dictionary of equipped items {"slot": Item}
     """
 
-    def __init__(self, x=0, y=0, health=100, tile=Tile.clear,
+    def __init__(self, x=0, y=0, health=100, max_health=None, tile=Tile.clear,
                  solid=False, tag='', name='entity', layer=0):
         self.x = x
         self.y = y
@@ -48,12 +49,16 @@ class Entity(object):
         self.name = name
         self.tag = tag
 
+        if max_health is None:
+            self.max_health = health
+
         self.dead = False
 
-        # Default levelling scale
+        # Generate default levelling scale
         difference = 10
         self.levels = []
 
+        # Exp needed for level is square of the level multiplied by difference
         for level in range(1000):
             self.levels.append(level**2 * difference)
 
@@ -150,6 +155,16 @@ class Entity(object):
         attacker = self.level() / 2 + weapon_damage
         defender = entity.defense
         return math.floor(((random.random() + 1) * attacker) - defender)
+
+    def add_health(self, hp):
+        """ Add hp to the entities health, capping at max health.
+
+        hp can be negative to subtract health, which can go below zero.
+        """
+        self.health += hp
+
+        if self.health > self.max_health:
+            self.health = self.max_health
 
     def add_item(self, item):
         """ Add item to the entity's inventory. """
