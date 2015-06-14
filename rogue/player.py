@@ -20,13 +20,13 @@ class Player(Entity):
         if entity is not None and entity.tag == 'enemy':
             # Player deals damage
             damage = self.calculate_damage(entity)
-            entity.health -= damage
+            entity.add_health(-damage)
             queue.append("hit {} with {} for {} hp!".format(entity.name,
                 self.get_slot("right hand").name, damage))
 
             # Enemy deals damage
             damage = entity.calculate_damage(self)
-            self.health -= damage
+            self.add_health(-damage)
             queue.append("{} hit player with {} for {} hp!".format(entity.name,
                 entity.get_slot("right hand").name, damage))
 
