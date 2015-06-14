@@ -23,6 +23,9 @@ def get_loot(game):
 
     corpse.items.clear()
 
+def wait(game):
+    pass
+
 def quit(game):
     return 'quit'
 
@@ -30,6 +33,7 @@ def quit(game):
 key_functions = {'e': views.inventory,
                  'c': views.character,
                  ';': get_loot,
+                 't': wait,
                  '?': views.help_general,
                  'q': quit}
 
