@@ -24,7 +24,9 @@ def get_loot(game):
     corpse.items.clear()
 
 def wait(game):
-    pass
+    """ Wait for a tick to generate some health. """
+    game.player.add_health(round(game.player.max_health / 10))
+    queue.append("Rested for 1 tick...")
 
 def quit(game):
     return 'quit'
