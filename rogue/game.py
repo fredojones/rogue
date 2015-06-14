@@ -10,6 +10,7 @@ from .keys   import Keys
 from .queue  import queue
 from .item   import Item
 from . import bindings
+from . import views
 
 
 class Game(object):
@@ -57,6 +58,9 @@ class Game(object):
 
     def update(self):
         self.camera.draw(self.window, self.world)
+
+        # Draw heads up display
+        views.hud(self)
 
         # Refresh the messages on screen
         queue.draw(self.window, x=3, y=20, lines=7)

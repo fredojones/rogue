@@ -127,6 +127,26 @@ def character(game):
         if key == 'q':
             break
 
+def hud(game):
+    """ Heads up display shown during game. """
+
+    # Offsets for where to start drawing the HUD
+    x, y = game.camera.view.width + 2, 2
+
+    # Display basic player info
+    game.window.addstr(y, x, '{} the level {} adventurer'.format(
+        game.player.name, game.player.level()))
+
+    # Render health bar using a linear interpolation of the health to max_health
+    bar_width = 15
+    hearts_full = round((game.player.health / game.player.max_health) * bar_width)
+
+    # Use = to represent life, - to represent lack of life
+    bar = 'hp: {}{} {}/{}'.format('=' * hearts_full, '-' * (bar_width - hearts_full),
+            game.player.health, game.player.max_health)
+
+    game.window.addstr(y + 2, x, bar) 
+
 def help_general(game):
     """ Help in world view. """
     game.window.clear()
