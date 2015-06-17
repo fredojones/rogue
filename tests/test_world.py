@@ -87,6 +87,23 @@ def test_getting_multiple_entities(world, entity):
     assert entity is world.get_entities_at(20, 24)[0]
     assert entity2 is world.get_entities_at(20, 24)[1]
 
+def test_getting_entities_surrounding(world, entity):
+    entity.x = 20
+    entity.y = 24
+    world.add_entity(entity)
+    entity2 = Entity(x=20, y=25)
+    world.add_entity(entity2)
+    entity3 = Entity(x=21, y=25)
+    world.add_entity(entity3)
+    entity4 = Entity(x=50, y=50)
+    world.add_entity(entity4)
+
+    entities = world.get_entities_surrounding(21, 24)
+    assert entity in entities
+    assert entity2 in entities
+    assert entity3 in entities
+    assert entity4 not in entities
+
 def test_adding_square_room(world):
     world.add_room(10, 10, room.square_room(width=10, height=12))
     assert world.get_tile(10, 10) == Tile.wall

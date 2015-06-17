@@ -24,13 +24,7 @@ class Player(Entity):
             entity.add_health(-damage)
             queue.append("hit {} with {} for {} hp!".format(entity.name,
                 self.get_slot("right hand").name, damage))
-
-            # Enemy deals damage
-            damage = entity.calculate_damage(self)
-            self.add_health(-damage)
-            queue.append("{} hit player with {} for {} hp!".format(entity.name,
-                entity.get_slot("right hand").name, damage))
-
+            
             # If enemy dies, gain exp
             if entity.health <= 0:
                 exp = random.randint(15, 250)

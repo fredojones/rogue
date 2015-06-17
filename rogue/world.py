@@ -97,6 +97,20 @@ class World(object):
                 result.append(entity)
         return result
 
+    def get_entities_surrounding(self, x, y):
+        """ Get list of entities in the 8 squares surrounding x, y.
+
+        Return empty list of none found.
+        """
+        result = []
+        for dx in range(-1, 2):
+            for dy in range(-1, 2):
+                # Skip square at (x, y)
+                if dx == 0 and dy == 0:
+                    continue
+                result.extend(self.get_entities_at(x + dx, y + dy))
+        return result
+
     def remove_entity(self, entity):
         """ Remove given entity from the world. """
         self.entities.remove(entity)

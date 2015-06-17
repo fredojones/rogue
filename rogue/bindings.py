@@ -57,7 +57,7 @@ def move(game, dirn):
 key_functions = {'e': views.inventory,
                  'c': views.character,
                  ';': get_loot,
-                 't': wait,
+                 '.': wait,
                  '?': views.help_general,
                  'q': quit,
                  
