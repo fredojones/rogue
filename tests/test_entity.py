@@ -76,7 +76,7 @@ def test_entity_becomes_corpse_on_next_update_when_dead(entity, world):
     entity.health = -1
     game = Dummy_Game()
     game.world = world
-    entity.update(game, ' ')
+    entity.update(game)
     assert entity.tag == 'corpse'
     
 def test_adding_items_to_inventory(entity, item):

@@ -50,28 +50,13 @@ class Player(Entity):
 
         self.move(x, y, world)
 
-    def update(self, game, key):
-        """ Update the game for the player, moving them depending
-            on the key pressed. """
+    def update(self, game):
+        """ Update the game for the player.
 
-        if key == Keys.up:
-            self.attack_move(self.x, self.y - 1, game.world)
-        if key == Keys.down:
-            self.attack_move(self.x, self.y + 1, game.world)
-        if key == Keys.left:
-            self.attack_move(self.x - 1, self.y, game.world)
-        if key == Keys.right:
-            self.attack_move(self.x + 1, self.y, game.world)
-        if key == Keys.up_left:
-            self.attack_move(self.x - 1, self.y - 1, game.world)
-        if key == Keys.down_left:
-            self.attack_move(self.x - 1, self.y + 1, game.world)
-        if key == Keys.up_right:
-            self.attack_move(self.x + 1, self.y - 1, game.world)
-        if key == Keys.down_right:
-            self.attack_move(self.x + 1, self.y + 1, game.world)
-
+        Movement is done in bindings.py
+        """
+        
         game.camera.center_on(self, game.world)
 
-        super().update(game, key)
+        super().update(game)
 

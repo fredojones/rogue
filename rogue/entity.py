@@ -131,7 +131,7 @@ class Entity(object):
         self.x = p.x
         self.y = p.y
 
-    def update(self, game, key):
+    def update(self, game):
         """ Update the entity.
 
         Keyword arguments:

@@ -75,7 +75,7 @@ class Game(object):
             if res == 'quit':
                 return 'quit'
 
-        self.world.update(self, key)
+        self.world.update(self)
         self.window.clear()
 
 

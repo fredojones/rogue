@@ -114,17 +114,16 @@ class World(object):
             self.set_tile(i + x, j + y, tile)
 
 
-    def update(self, game, key):
+    def update(self, game):
         """ Update the world and all entities in it.
 
         Keyword arguments:
         game -- current Game object, representing game state
-        key -- key pressed this frame
         """
         # Don't update dead entities
         for entity in self.entities:
             if not entity.dead:
-                entity.update(game, key)
+                entity.update(game)
 
 
     @staticmethod

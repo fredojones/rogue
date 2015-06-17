@@ -2,6 +2,7 @@
 from . import views
 from .queue import queue
 from .keys import Keys
+from functools import partial
 
 def get_loot(game):
     """ Get loot from corpse. """
@@ -31,11 +32,41 @@ def wait(game):
 def quit(game):
     return 'quit'
 
+def move(game, dirn):
+    player = game.player
+
+    if dirn == 'up':
+        player.attack_move(player.x, player.y - 1, game.world)
+    if dirn == 'down':
+        player.attack_move(player.x, player.y + 1, game.world)
+    if dirn == 'left':
+        player.attack_move(player.x - 1, player.y, game.world)
+    if dirn == 'right':
+        player.attack_move(player.x + 1, player.y, game.world)
+    if dirn == 'upleft':
+        player.attack_move(player.x - 1, player.y - 1, game.world)
+    if dirn == 'downleft':
+        player.attack_move(player.x - 1, player.y + 1, game.world)
+    if dirn == 'upright':
+        player.attack_move(player.x + 1, player.y - 1, game.world)
+    if dirn == 'downright':
+        player.attack_move(player.x + 1, player.y + 1, game.world)
+
+
 """ Dictionary between the key to enter a given function. """
 key_functions = {'e': views.inventory,
                  'c': views.character,
                  ';': get_loot,
                  't': wait,
                  '?': views.help_general,
-                 'q': quit}
+                 'q': quit,
+                 
+                 Keys.up:         partial(move, dirn='up'),
+                 Keys.down:       partial(move, dirn='down'),
+                 Keys.left:       partial(move, dirn='left'),
+                 Keys.right:      partial(move, dirn='right'),
+                 Keys.up_left:    partial(move, dirn='upleft'),
+                 Keys.down_left:  partial(move, dirn='downleft'),
+                 Keys.up_right:   partial(move, dirn='upright'),
+                 Keys.down_right: partial(move, dirn='downright')}
 
