@@ -16,18 +16,21 @@ class Enemy(Entity):
         Enemy will move directly towards the player with some chance.
         """
 
-        if random.random() > 0.3:
-            if game.player.x > self.x:
-                self.move(self.x + 1, self.y, game.world)
-        if random.random() > 0.3:
-            if game.player.x < self.x:
-                self.move(self.x - 1, self.y, game.world)
-        if random.random() > 0.3:
-            if game.player.y > self.y:
-                self.move(self.x, self.y + 1, game.world)
-        if random.random() > 0.3:
-            if game.player.y < self.y:
-                self.move(self.x, self.y - 1, game.world)
+        # Make sure within range of player
+        if self.distance(game.player) < 6:
+            # Random each direction
+            if random.random() > 0.3:
+                if game.player.x > self.x:
+                    self.move(self.x + 1, self.y, game.world)
+            if random.random() > 0.3:
+                if game.player.x < self.x:
+                    self.move(self.x - 1, self.y, game.world)
+            if random.random() > 0.3:
+                if game.player.y > self.y:
+                    self.move(self.x, self.y + 1, game.world)
+            if random.random() > 0.3:
+                if game.player.y < self.y:
+                    self.move(self.x, self.y - 1, game.world)
 
         # Attack player if in range
         for entity in game.world.get_entities_surrounding(self.x, self.y):

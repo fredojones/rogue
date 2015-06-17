@@ -193,5 +193,8 @@ def test_adding_above_max_health(entity):
     entity.add_health(10)
     assert entity.health == old_health
 
-
-
+def test_calculating_distance(entity):
+    entity.x = 10
+    entity.y = 10
+    entity2 = Entity(x=13, y=14)
+    assert entity.distance(entity2) == 5

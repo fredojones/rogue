@@ -125,6 +125,11 @@ class Entity(object):
         self.y = y
         return True
 
+    def distance(self, entity):
+        """ Calculate the absolute distance between this and the other entity. """
+        return math.sqrt(math.pow(self.x - entity.x, 2) +
+                         math.pow(self.y - entity.y, 2))
+
     def random_floor_tile(self, world):
         """ Place the entity on a random floor tile in the world. """
         p = world.random_floor_tile()
