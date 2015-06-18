@@ -168,7 +168,7 @@ class World(object):
         Returns new World object.
         """
         # Number of attempts to add a new feature
-        MAX_ITERS = 200
+        MAX_ITERS = 1000
 
         world = World(width, height)
 
@@ -221,7 +221,7 @@ class World(object):
                 
             x1, y1 = walldirn[0][0]
 
-            if random.random() > 0.5:
+            if random.random() > 0.2:
                 # build room
                 width = random.randrange(8, 16)
                 height = random.randrange(8, 16)
