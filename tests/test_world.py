@@ -21,8 +21,8 @@ def test_world_initialize(world):
     assert world.height == 100
 
 def test_setting_then_getting_tile(world):
-    world.set_tile(10, 10, Tile.exit)
-    assert world.get_tile(10, 10) == Tile.exit
+    world.set_tile(10, 10, Tile.up)
+    assert world.get_tile(10, 10) == Tile.up
 
 def test_checking_if_tile_is_wall(world):
     assert not world.is_wall(10, 10)
@@ -104,8 +104,8 @@ def test_getting_entities_surrounding(world, entity):
     assert entity3 in entities
     assert entity4 not in entities
 
-def test_adding_square_room(world):
-    world.add_room(10, 10, room.square_room(width=10, height=12))
+def test_adding_rectangular_room(world):
+    world.add_room(10, 10, room.rect_room(width=10, height=12))
     assert world.get_tile(10, 10) == Tile.wall
     assert world.get_tile(11, 11) == Tile.floor
 

@@ -127,6 +127,9 @@ class World(object):
         for (i, j), tile in room.items():
             self.set_tile(i + x, j + y, tile)
 
+    def get_walls(self):
+        """ Get all the walls in the world. """
+        return list(filter(lambda x: x[1] == Tile.wall, self.tiles.items()))
 
     def update(self, game):
         """ Update the world and all entities in it.
@@ -138,7 +141,6 @@ class World(object):
         for entity in self.entities:
             if not entity.dead:
                 entity.update(game)
-
 
     @staticmethod
     def Empty_Tiles(width, height, tile):
@@ -161,12 +163,156 @@ class World(object):
 
     @classmethod
     def Dungeon_World(World, width, height):
-        """ Generate new dungeon with randomly generated rooms.
+        """ Generate new dungeon with randomly generated features.
 
         Returns new World object.
         """
+        # Number of attempts to add a new feature
+        MAX_ITERS = 200
+
         world = World(width, height)
 
-        world.add_room(10, 10, room.square_room(20, 20))
+        # Add initial room in center of map
+        world.add_room(width/2, height/2, room.rect_room(8, 6))
+
+        def pick_random_wall(walls):
+            """ Choose a random wall tile that is adjacent (non-diagonal)
+                to a clear (empty space) tile.
+
+                Return a tuple of the wall tile, and the direction toward the clear tile.
+            """
+            def direction_to_clear_tile(point):
+                """ Return direction 'N', 'S', 'E', 'W' towards SINGLE clear tile.
+
+                Return None if no clear tile found or if more than 1 found. """
+                x, y = point
+
+                tiles = [world.get_tile(x + 1, y), world.get_tile(x - 1, y),
+                         world.get_tile(x, y + 1), world.get_tile(x, y - 1)]
+
+                # Don't allow more than 1 clear tile
+                if len(list(filter(lambda x: x == Tile.clear, tiles))) > 1:
+                    return None
+
+                if world.get_tile(x, y - 1) == Tile.clear:
+                    return 'N'
+                if world.get_tile(x, y + 1) == Tile.clear:
+                    return 'S'
+                if world.get_tile(x + 1, y) == Tile.clear:
+                    return 'E'
+                if world.get_tile(x - 1, y) == Tile.clear:
+                    return 'W'
+                return None
+
+            # Loop through each wall until wall is found that is
+            # adjacent to a clear tile, then return the direction and wall
+            while True:
+                wall = random.choice(walls)
+                dirn = direction_to_clear_tile(wall[0])
+                if dirn is not None:
+                    return (wall, dirn)
+
+        from pdb import set_trace
+        # Generate the world!
+        walls = world.get_walls()
+
+        for _ in range(MAX_ITERS):
+            walldirn = pick_random_wall(walls)
+                
+            x1, y1 = walldirn[0][0]
+
+            if random.random() > 0.5:
+                # build room
+                width = random.randrange(8, 16)
+                height = random.randrange(8, 16)
+                r = room.rect_room(width, height)
+
+                def fits_in_space(start, direction, room):
+                    x1, y1 = start
+
+                    for point, tile in room.items():
+                        x, y = point
+                        if world.get_tile(x1 + x, y1 + y) != Tile.clear:
+                            return False
+
+                    return True
+
+                direction = walldirn[1]
+
+                # Allow single space gap depending on direction
+                # and put the entrance half way along the room
+                if direction == 'N':
+                    x_offs = -width // 2
+                    y_offs = -2
+                if direction == 'S':
+                    x_offs = -width // 2
+                    y_offs = +2
+                if direction == 'E':
+                    y_offs = -height // 2
+                    x_offs = +2
+                if direction == 'W':
+                    y_offs = -height // 2
+                    x_offs = -2
+
+                if fits_in_space((x1 + x_offs, y1 + y_offs), direction, r):
+                    # Add the room
+                    world.add_room(x1 + x_offs, y1 + y_offs, r)
+
+                    # Patch up the gap with a corridor
+                    world.add_room(x1, y1, room.cardinal_corridor(direction, 3))
+
+                    # Regenerate the walls list
+                    walls = world.get_walls()
+
+
+            else:
+                # build corridor
+                length = random.randrange(6, 10)
+                corridor = room.cardinal_corridor(walldirn[1], length)
+
+                def fits_in_space(start, direction, length, corridor):
+                    x1, y1 = start
+
+                    for point, tile in corridor.items():
+                        # Allow start and end and wall tiles to overlap with other tiles
+                        if tile == Tile.wall:
+                            continue
+
+                        if direction == 'E' or direction == 'W':
+                            if point[0] == 0 or point[0] == length:
+                                continue
+
+                        if direction == 'N' or direction == 'S':
+                            if point[1] == 0 or point[1] == length:
+                                continue
+
+                        x, y = point
+                        if world.get_tile(x1 + x, y1 + y) != Tile.clear:
+                            return False
+
+                    return True
+
+                if fits_in_space((x1, y1), walldirn[1], length, corridor):
+                    # Add the corridor
+                    world.add_room(x1, y1, corridor)
+                    # Regenerate the walls list
+                    walls = world.get_walls()
+
+        # Patch up all gaps into the outside "world"
+        for point, tile in world.tiles.items():
+            x, y = point
+
+            # If tile is clear and adjacent to a floor tile, patch it
+            if tile == Tile.clear:
+                for dx in range(-1, 2):
+                    for dy in range(-1, 2):
+                        # Skip if out of range
+                        if (x + dx < 0 or y + dy < 0 or
+                            x + dx > world.width - 1 or y + dy > world.height - 1):
+                            continue
+
+                        if world.get_tile(x + dx, y + dy) == Tile.floor:
+                            world.set_tile(x, y, Tile.wall)
+
 
         return world
