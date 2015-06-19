@@ -11,6 +11,7 @@ from .queue  import queue
 from .item   import Item
 from . import bindings
 from . import views
+from . import colors
 
 
 class Game(object):
@@ -54,7 +55,8 @@ class Game(object):
         self.window = window
         self.window.keypad(1)
         curses.curs_set(0)
-
+        colors.start_colors()
+        
         while True:
             if self.update() == "quit":
                 return

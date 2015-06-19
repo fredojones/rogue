@@ -1,3 +1,4 @@
+import curses
 from collections import namedtuple
 from .rect import Rect
 from .debug import debug
@@ -22,12 +23,15 @@ class Camera(object):
 
         for x in range(self.view.width):
             for y in range(self.view.height):
-                window.addch(y, x, ord(world.get_tile(x+self.view.x, y+self.view.y)))
+                window.addch(y, x, ord(world.get_tile(x+self.view.x, y+self.view.y)),
+                        curses.color_pair(3))
 
+        # Draw the entities ordered by their layer, largest layer drawn first
         for entity in reversed(sorted(world.entities, key=lambda entity: entity.layer)):
             if self.is_visible(entity):
                 pos = self.world_to_screen(entity.x, entity.y)
-                window.addch(pos.y, pos.x, ord(str(entity)))
+                window.addch(pos.y, pos.x, ord(str(entity)),
+                        curses.color_pair(entity.color_pair))
 
     def world_to_screen(self, x, y):
         """ Transform world coordinates to screen coordinates.

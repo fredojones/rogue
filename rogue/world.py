@@ -179,7 +179,8 @@ class World(object):
             """ Choose a random wall tile that is adjacent (non-diagonal)
                 to a clear (empty space) tile.
 
-                Return a tuple of the wall tile, and the direction toward the clear tile.
+                Return a tuple of the wall tile, and the direction
+                toward the clear tile.
             """
             def direction_to_clear_tile(point):
                 """ Return direction 'N', 'S', 'E', 'W' towards SINGLE clear tile.
@@ -212,10 +213,9 @@ class World(object):
                 if dirn is not None:
                     return (wall, dirn)
 
-        from pdb import set_trace
-        # Generate the world!
         walls = world.get_walls()
 
+        # Generate the world!
         for _ in range(MAX_ITERS):
             walldirn = pick_random_wall(walls)
                 
@@ -274,7 +274,8 @@ class World(object):
                     x1, y1 = start
 
                     for point, tile in corridor.items():
-                        # Allow start and end and wall tiles to overlap with other tiles
+                        # Allow start and end and wall
+                        # tiles to overlap with other tiles
                         if tile == Tile.wall:
                             continue
 
@@ -302,8 +303,8 @@ class World(object):
         for point, tile in world.tiles.items():
             x, y = point
 
-            # If tile is clear and adjacent to a floor tile, patch it
-            if tile == Tile.clear:
+            # If tile is floor and adjacent to a clear tile, patch the clear tile
+            if tile == Tile.floor:
                 for dx in range(-1, 2):
                     for dy in range(-1, 2):
                         # Skip if out of range
@@ -311,8 +312,8 @@ class World(object):
                             x + dx > world.width - 1 or y + dy > world.height - 1):
                             continue
 
-                        if world.get_tile(x + dx, y + dy) == Tile.floor:
-                            world.set_tile(x, y, Tile.wall)
+                        if world.get_tile(x + dx, y + dy) == Tile.clear:
+                            world.set_tile(x + dx, y + dy, Tile.wall)
 
 
         return world

@@ -23,6 +23,7 @@ class Entity(object):
     dead -- whether or not entity should update
 
     tile -- character representing the object
+    color_pair -- color pair number as set by curses
     solid -- whether entity is solid, i.e. whether this space can be moved
              into by other solid entities
 
@@ -39,12 +40,13 @@ class Entity(object):
     """
 
     def __init__(self, x=0, y=0, health=100, max_health=None, tile=Tile.clear,
-                 solid=False, tag='', name='entity', layer=0):
+                 solid=False, tag='', name='entity', layer=0, color_pair=0):
         self.x = x
         self.y = y
         self.layer = layer
         self.health = health
         self.tile = tile
+        self.color_pair = color_pair
         self.solid = solid
         self.name = name
         self.tag = tag
