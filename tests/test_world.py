@@ -9,10 +9,6 @@ def world():
     return World(width=100, height=100)
 
 @pytest.fixture
-def dungeon():
-    return World.Dungeon_World(width=100, height=100)
-
-@pytest.fixture
 def entity():
     return Entity(0, 0, Tile.player)
 
@@ -109,6 +105,8 @@ def test_adding_rectangular_room(world):
     assert world.get_tile(10, 10) == Tile.wall
     assert world.get_tile(11, 11) == Tile.floor
 
+""" Removed test as it takes too long to generate dungeon world
 def test_dungeon_world_has_floor_tiles(dungeon):
     dungeon.random_floor_tile()
+"""
 
