@@ -1,4 +1,4 @@
-import curses
+import curses, os
 from copy import deepcopy
 
 from .tile   import Tile
@@ -23,7 +23,8 @@ class Game(object):
         self.camera = Camera()
 
         # Get all items
-        self.items = Item.get_all_json(open("rogue/data/items.json"))
+        items_file = os.path.join(os.path.dirname(__file__), 'data/items.json')
+        self.items = Item.get_all_json(open(items_file))
 
         # Player setup
         self.player = Player()
