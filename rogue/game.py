@@ -43,7 +43,7 @@ class Game(object):
             raise Exception()
 
         # Generate some enemies!
-        for _ in range(5):
+        for _ in range(20):
             enemy = Enemy()
             enemy.random_floor_tile(self.world)
             self.world.add_entity(enemy)
