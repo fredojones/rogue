@@ -19,7 +19,7 @@ class Game(object):
 
     def __init__(self):
         """ Setup default game. """
-        self.world = World.Dungeon_World(width=1000, height=1000)
+        #self.world = World.Dungeon_World(width=1000, height=1000)
         self.camera = Camera()
 
         # Get all items
