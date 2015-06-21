@@ -162,10 +162,16 @@ class World(object):
         return tiles
 
     @classmethod
-    def Dungeon_World(World, width, height):
+    def Dungeon_World(World, width, height, room_x, room_y):
         """ Generate new dungeon with randomly generated features.
 
         Returns new World object.
+
+        Keyword Arguments:
+        width -- width of game world
+        height -- height of game world
+        room_x -- x position of first room added
+        room_y -- y position of first room added
         """
         # Number of attempts to add a new feature
         MAX_ITERS = 1000
@@ -173,7 +179,8 @@ class World(object):
         world = World(width, height)
 
         # Add initial room in center of map
-        world.add_room(width/2, height/2, room.rect_room(8, 6))
+        world.add_room(room_x, room_y, room.rect_room(8, 6))
+        world.set_tile(room_x + 2, room_y + 2, Tile.up)
 
         def pick_random_wall(walls):
             """ Choose a random wall tile that is adjacent (non-diagonal)
@@ -315,5 +322,11 @@ class World(object):
                         if world.get_tile(x + dx, y + dy) == Tile.clear:
                             world.set_tile(x + dx, y + dy, Tile.wall)
 
+        # Add a few random entrances and exits
+        for _ in range(5):
+            p = world.random_floor_tile()
+            world.set_tile(p.x, p.y, Tile.down)
+            p = world.random_floor_tile()
+            world.set_tile(p.x, p.y, Tile.up)
 
         return world

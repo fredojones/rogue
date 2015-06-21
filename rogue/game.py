@@ -18,15 +18,24 @@ class Game(object):
     """ Main game class. Call run with curses.wrapper to start. """
 
     def __init__(self):
-        """ Setup default game. """
-        #self.world = World.Dungeon_World(width=1000, height=1000)
-        self.camera = Camera()
-
         # Get all items
         items_file = os.path.join(os.path.dirname(__file__), 'data/items.json')
         self.items = Item.get_all_json(open(items_file))
 
-        # Player setup
+        """ World setup. """
+        # Current floor in the game, 0 is the first floor, the index for self.worlds
+        self.world_index = 0
+
+        # Dict containing each world in the game
+        self.worlds = {}
+
+        # Setup the first world
+        self.worlds[0] = World.Dungeon_World(width=1000, height=1000,
+                room_x = 500, room_y = 500)
+
+        self.camera = Camera()
+
+        # Setup the player
         self.player = Player()
         #self.player.random_floor_tile(self.world)
         self.player.x = self.world.width//2 + 2
@@ -84,6 +93,18 @@ class Game(object):
         self.world.update(self)
         self.window.clear()
 
+    @property
+    def world(self):
+        """ Get the current game world at world_index.
+        
+        Return None of no world at self.world_index.
+        """
+        return self.worlds.get(self.world_index)
+
+    @world.setter
+    def world(self, value):
+        """ Set the current world at world_index. """
+        self.worlds[self.world_index] = value
 
 
 def main():

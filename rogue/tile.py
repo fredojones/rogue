@@ -5,7 +5,7 @@ class Tile():
     floor = '.'
     clear = ' '
     up    = '<'
-    down  = '<'
+    down  = '>'
     
     corpse = ';'
     enemy = 'g'
