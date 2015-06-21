@@ -24,7 +24,7 @@ class Camera(object):
         for x in range(self.view.width):
             for y in range(self.view.height):
                 window.addch(y, x, ord(world.get_tile(x+self.view.x, y+self.view.y)),
-                        curses.color_pair(3))
+                        curses.color_pair(30))
 
         # Draw the entities ordered by their layer, largest layer drawn first
         for entity in reversed(sorted(world.entities, key=lambda entity: entity.layer)):
