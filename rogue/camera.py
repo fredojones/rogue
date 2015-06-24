@@ -8,10 +8,14 @@ class Camera(object):
 
     Attributes:
     view -- Rect containing the current view of the camera
+    tiles_seen -- dictionary of tiles that have been seen by player,
+                  key is point tuple (x, y), value is Tile
+                  tiles in this dictionary will be rendered in grey
     """
 
     def __init__(self, x=0, y=0, width=51, height=15):
         self.view = Rect(x, y, width, height)
+        self.tiles_seen = {}
 
     def draw(self, window, world):
         """ Render world tiles and then entities to window.
@@ -21,6 +25,7 @@ class Camera(object):
         world -- current game World object
         """
 
+        # Draw the tiles
         for x in range(self.view.width):
             for y in range(self.view.height):
                 window.addch(y, x, ord(world.get_tile(x+self.view.x, y+self.view.y)),
@@ -28,10 +33,21 @@ class Camera(object):
 
         # Draw the entities ordered by their layer, largest layer drawn first
         for entity in reversed(sorted(world.entities, key=lambda entity: entity.layer)):
+            # Only draw if the entity is on-screen
             if self.is_visible(entity):
                 pos = self.world_to_screen(entity.x, entity.y)
                 window.addch(pos.y, pos.x, ord(str(entity)),
                         curses.color_pair(entity.color_pair))
+
+    def entities_seen_by(self, world, entity):
+        """ Return list of entities visible to entity. """
+        res = []
+        res.append(entity)
+        return res
+
+    def tiles_seen_by(self, world, entity):
+        """ Return dict {(x, y): Tile} of tiles visible to entity. """
+        pass
 
     def world_to_screen(self, x, y):
         """ Transform world coordinates to screen coordinates.
