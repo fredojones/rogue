@@ -72,7 +72,7 @@ class Game(object):
                 return
 
     def update(self):
-        self.camera.draw(self.window, self.world)
+        self.camera.draw(self.window, self.world, point=(self.player.x, self.player.y))
 
         # Draw heads up display
         views.hud(self)

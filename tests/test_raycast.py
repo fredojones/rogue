@@ -15,10 +15,8 @@ def world():
 def test_raycast_in_room(world):
     world.add_room(10, 10, rogue.room.rect_room(20, 20))
 
-    Point = namedtuple("Point", ['x', 'y'])
-
     for a in range(0, 360, 30):
-        res = rogue.ray.ray_cast(point=Point(20, 20), angle=a,
+        res = rogue.ray.ray_cast(point=(20, 20), angle=a,
                 radius=20, world=world)
 
         # First item should always be point given to raycast
@@ -31,9 +29,7 @@ def test_raycast_in_room(world):
 def test_tiles_visible_in_square_room(world):
     world.add_room(10, 10, rogue.room.rect_room(30, 30))
 
-    Point = namedtuple("Point", ['x', 'y'])
-
-    res = rogue.ray.ray_cast_circle(point=Point(20, 20), radius=40, world=world)
+    res = rogue.ray.ray_cast_circle(point=(20, 20), radius=40, world=world)
 
     # all tiles should be visible to player
     for x in range(30):
@@ -52,8 +48,7 @@ def test_entities_visible_to_entity(world):
 
     world.add_room(10, 10, rogue.room.rect_room(30, 30))
 
-    Point = namedtuple("Point", ['x', 'y'])
-    res = rogue.ray.ray_cast_circle(point=Point(20, 20), radius=40, world=world)
+    res = rogue.ray.ray_cast_circle(point=(20, 20), radius=40, world=world)
 
     entities_seen = list(map(lambda p: world.get_entity_at(p[0], p[1]), res))
 

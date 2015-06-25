@@ -1,6 +1,7 @@
 import curses
 from collections import namedtuple
 from .rect import Rect
+from .debug import debug
 from . import ray
 
 class Camera(object):
@@ -8,33 +9,50 @@ class Camera(object):
 
     Attributes:
     view -- Rect containing the current view of the camera
-    tiles_seen -- dictionary of tiles that have been seen by player,
-                  key is point tuple (x, y), value is Tile
-                  tiles in this dictionary will be rendered in grey
+    tiles_seen -- set of (x, y) points that have been seen at some point,
+                  tiles at these points will be rendered in grey.
     """
 
     def __init__(self, x=0, y=0, width=51, height=15):
         self.view = Rect(x, y, width, height)
-        self.tiles_seen = {}
+        self.tiles_seen = set()
 
-    def draw(self, window, world):
+    def draw(self, window, world, point):
         """ Render world tiles and then entities to window.
 
         Keyword arguments:
         window -- current curses window (or screen) object
         world -- current game World object
+        point -- (x, y) point at which to raycast player's view from
         """
 
-        # Draw the tiles
+        # Raycast to see which tiles are seen
+        seen = ray.ray_cast_circle(point=point, radius=20, world=world)
+
+        # Add to the set of seen tiles
+        self.tiles_seen = self.tiles_seen.union(seen)
+
+        # Draw visible tiles
         for x in range(self.view.width):
             for y in range(self.view.height):
-                window.addch(y, x, ord(world.get_tile(x+self.view.x, y+self.view.y)),
-                        curses.color_pair(30))
+                # Transform to world coordinates
+                x1, y1 = x + self.view.x, y + self.view.y
+
+                # Only draw if seen by the raycaster
+                if (x1, y1) in seen:
+                    window.addch(y, x, ord(world.get_tile(x1, y1)),
+                            curses.color_pair(30))
+
+                # If seen before, render in grey
+                elif (x1, y1) in self.tiles_seen:
+                    window.addch(y, x, ord(world.get_tile(x1, y1)),
+                            curses.color_pair(40))
+
 
         # Draw the entities ordered by their layer, largest layer drawn first
         for entity in reversed(sorted(world.entities, key=lambda entity: entity.layer)):
-            # Only draw if the entity is on-screen
-            if self.is_visible(entity):
+            # Only draw if the entity is on-screen and seen by raycaster
+            if self.is_visible(entity) and (entity.x, entity.y) in seen:
                 pos = self.world_to_screen(entity.x, entity.y)
                 window.addch(pos.y, pos.x, ord(str(entity)),
                         curses.color_pair(entity.color_pair))

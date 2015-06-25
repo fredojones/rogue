@@ -13,7 +13,7 @@ def ray_cast(point, angle, radius, world):
         Result will be sorted by tile visited first.
 
     Keyword Arguments:
-    point  -- point at which to raycast from
+    point  -- (x, y) point at which to raycast from
     angle  -- angle in degrees at which to shoot the ray, 0 being straight up
     radius -- integer radius at which to stop casting the ray
     world  -- current world
@@ -30,7 +30,7 @@ def ray_cast(point, angle, radius, world):
        x, y = round(o_h * h), round(a_h * h)
 
        # Transform to world space
-       x1, y1 = x + point.x, y + point.y
+       x1, y1 = x + point[0], y + point[1]
        
        res.append((x1, y1))
 
