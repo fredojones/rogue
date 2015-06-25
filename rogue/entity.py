@@ -229,7 +229,7 @@ class Entity(object):
         return self.equipment.get(slot, None)
 
     def get_loot(self):
-        """ Get random sublist of entities items. """
+        """ Get random sublist of entity's items. """
         if len(self.items) == 1:
             num_loot = 1
         elif len(self.items) > 1:

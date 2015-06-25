@@ -36,6 +36,7 @@ class Player(Entity):
 
                 if self.level() > old_level:
                     self.max_health += 10
+                    self.health = self.max_health
                     queue.append("ding! You are now level {}".format(self.level()))
 
             # New line between each message
