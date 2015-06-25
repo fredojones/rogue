@@ -29,5 +29,5 @@ class Queue():
         return len(self.messages)
 
 
-""" Module-level global representing default message queue. """
+""" Default message queue instance. """
 queue = Queue()
