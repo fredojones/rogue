@@ -27,7 +27,7 @@ class Camera(object):
         """
 
         # Raycast to see which tiles are seen
-        seen = ray.ray_cast_circle(point=point, radius=20, world=world)
+        seen = ray.ray_cast_circle(point=point, radius=14, world=world)
 
         # Add to the set of seen tiles
         self.tiles_seen = self.tiles_seen.union(seen)
