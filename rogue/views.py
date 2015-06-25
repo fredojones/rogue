@@ -93,6 +93,8 @@ def inventory(game):
                 # Put selection cursor back to an item
                 selection -= 1
                 game.window.clear()
+
+                game.window.addstr(y_msg, x_msg, "Healed for {} hp".format(heal))
             else:
                 game.window.addstr(y_msg, x_msg, "Cannot eat non-food item")
 
@@ -116,12 +118,10 @@ def character(game):
 
         game.window.addstr('{} the level {} adventurer'.format(game.player.name,
             game.player.level()))
-
         game.window.addstr('\n\nWielding a {} in the right hand'.format(
             game.player.get_slot('right hand').name))
-
         game.window.addstr('\n\n{} hp'.format(game.player.health))
-
+        
         key = game.window.getkey()
 
         if key == 'q':
