@@ -38,8 +38,13 @@ class Enemy(Entity):
                 # Deal damage to the player
                 damage = self.calculate_damage(entity)
                 entity.add_health(-damage)
+
                 queue.append("{} hit player with {} for {} hp!".format(self.name,
-                self.get_slot("right hand").name, damage))
+                    self.get_slot("right hand").name, damage))
+
+                if entity.health <= 0:
+                    entity.die()
+                    queue.append("You die...")
 
         super().update(game)
 

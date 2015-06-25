@@ -24,13 +24,16 @@ class Player(Entity):
             entity.add_health(-damage)
             queue.append("hit {} with {} for {} hp!".format(entity.name,
                 self.get_slot("right hand").name, damage))
-            
-            # If enemy dies, gain exp
+           
+            # Entity dies
             if entity.health <= 0:
+                # Prevent entity from attacking on its last turn (i.e. while dead)
+                entity.die()
+
                 exp = random.randint(15, 250)
                 queue.append("gained {} exp".format(exp))
 
-                # Check if player has levelled up
+                # Check if player has leveled up
                 old_level = self.level()
                 self.exp += exp
 
@@ -42,8 +45,8 @@ class Player(Entity):
             # New line between each message
             queue.append('\n')
 
-
-        self.move(x, y, world)
+        else:
+            self.move(x, y, world)
 
     def update(self, game):
         """ Update the game for the player.

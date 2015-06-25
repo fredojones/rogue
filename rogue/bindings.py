@@ -14,8 +14,11 @@ def get_loot(game):
 
     entities = game.world.get_entities_at(x, y)
     try:
-        if entities[1].tag == 'corpse':
-            corpse = entities[1]
+        for entity in entities:
+            if entity.tag == 'corpse':
+                corpse = entity
+                break
+        # If no corpse found, return
         else:
             return
     except IndexError:
@@ -38,6 +41,10 @@ def quit(game):
 
 def move(game, dirn):
     player = game.player
+
+    # Don't move if dead
+    if player.dead:
+        return
 
     if dirn == 'up':
         player.attack_move(player.x, player.y - 1, game.world)

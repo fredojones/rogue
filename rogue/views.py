@@ -134,8 +134,11 @@ def hud(game):
     x, y = game.camera.view.width + 2, 2
 
     # Display basic player info
-    game.window.addstr(y, x, '{} the level {} adventurer'.format(
-        game.player.name, game.player.level()))
+    if game.player.dead:
+        game.window.addstr(y, x, game.player.name)
+    else:
+        game.window.addstr(y, x, '{} the level {} adventurer'.format(
+            game.player.name, game.player.level()))
 
 
     # Render health bar using a linear interpolation of the health to max_health

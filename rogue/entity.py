@@ -127,13 +127,26 @@ class Entity(object):
         self.y = y
         return True
 
+    def die(self):
+        """ Turn entity into corpse, making it non-solid and changing the tile etc. """
+        self.name = "Corpse of {}".format(self.name)
+        self.solid = False
+        self.tile = Tile.corpse
+        self.tag = "corpse"
+        self.layer = 1
+        self.dead = True
+
     def distance(self, entity):
         """ Calculate the absolute distance between this and the other entity. """
         return math.sqrt(math.pow(self.x - entity.x, 2) +
                          math.pow(self.y - entity.y, 2))
 
     def random_floor_tile(self, world):
-        """ Place the entity on a random floor tile in the world. """
+        """ Place the entity on a random floor tile in the world.
+        
+        Probably best not to use this but instead cache all the floor tiles,
+        or else pretty slow for a large world.
+        """
         p = world.random_floor_tile()
         self.x = p.x
         self.y = p.y
@@ -147,12 +160,7 @@ class Entity(object):
         """
         # Turn into corpse if entity dies
         if self.health <= 0:
-            self.name = "Corpse of {}".format(self.name)
-            self.solid = False
-            self.tile = Tile.corpse
-            self.tag = "corpse"
-            self.layer = 1
-            self.dead = True
+            self.die()
 
     def calculate_damage(self, entity):
         """ Calculate attack damage done to other entity, using modified
