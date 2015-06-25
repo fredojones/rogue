@@ -1,6 +1,7 @@
 import random
 from . import room
 from .tile import Tile
+from .enemy import Enemy
 from collections import namedtuple
 
 class World(object):
@@ -55,6 +56,9 @@ class World(object):
 
         Returns a namedtuple with attributes (x, y) corresponding to the
         position of the unoccupied floor tile (a floor tile without an entity on it).
+
+        Probably best not to use this but instead cache all the floor tiles,
+        or else pretty slow for a large world.
 
         Raise Exception if no unoccupied floor tile found.
         """
@@ -356,5 +360,11 @@ class World(object):
             world.set_tile(p.x, p.y, Tile.down)
             p = world.random_floor_tile()
             world.set_tile(p.x, p.y, Tile.up)
+
+        # Add some enemies
+        for _ in range(40):
+            enemy = Enemy()
+            enemy.random_floor_tile(world)
+            world.add_entity(enemy)
 
         return world

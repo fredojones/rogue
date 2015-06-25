@@ -52,13 +52,10 @@ class Game(object):
         if not self.camera.is_visible(self.player):
             raise Exception()
 
-        # Generate some enemies!
-        for _ in range(20):
-            enemy = Enemy()
-            enemy.random_floor_tile(self.world)
-            self.world.add_entity(enemy)
-            enemy.equip(deepcopy(self.items['rusty knife']))
-
+        # Equip all enemies with knives
+        for entity in self.world.entities:
+            if entity.tag == 'enemy':
+                entity.equip(deepcopy(self.items['rusty knife']))
 
     def run(self, window):
         """ Run main curses game with curses window. """
