@@ -353,18 +353,22 @@ class World(object):
                         if world.get_tile(x + dx, y + dy) == Tile.clear:
                             world.set_tile(x + dx, y + dy, Tile.wall)
 
+        # Get random floor tiles
+        floor_tiles = list(map(lambda x: x[0],
+            filter(lambda x: x[1] == Tile.floor, world.tiles.items())))
+        random.shuffle(floor_tiles)
 
         # Add a few random entrances and exits
         for _ in range(5):
-            p = world.random_floor_tile()
-            world.set_tile(p.x, p.y, Tile.down)
-            p = world.random_floor_tile()
-            world.set_tile(p.x, p.y, Tile.up)
+            x, y = floor_tiles.pop()
+            world.set_tile(x, y, Tile.down)
+            x, y = floor_tiles.pop()
+            world.set_tile(x, y, Tile.up)
 
         # Add some enemies
         for _ in range(40):
             enemy = Enemy()
-            enemy.random_floor_tile(world)
+            enemy.x, enemy.y = floor_tiles.pop()
             world.add_entity(enemy)
 
         return world
