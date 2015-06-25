@@ -61,38 +61,4 @@ def test_world_to_screen_coords(camera):
     screen = camera.world_to_screen(140, 200)
     assert screen == (40, 100)
 
-def test_tiles_visible_to_entity(camera, entity, world):
-    entity.x, entity.y = 20, 20
-    world.add_room(10, 10, rogue.room.rect_room(30, 30))
-
-    # all tiles should be visible to player
-    seen_tiles = camera.tiles_seen_by(world, entity)
-    assert world.tiles == seen_tiles
-
-def test_entity_visible_to_entity(camera, entity, world):
-    seen_entities = camera.entities_seen_by(world, entity)
-    assert entity in seen_entities
-
-def test_entities_visible_to_entity(camera, entity, world):
-    entity.x, entity.y = 20, 20
-
-    entities = []
-    entities.append(Entity(x=30, y=30))
-    entities.append(Entity(x=26, y=30))
-    entities.append(Entity(x=25, y=20))
-    entities.append(Entity(x=24, y=80))
-
-    for entity in entities:
-        world.add_entity(entities)
-
-    world.add_room(10, 10, rogue.room.rect_room(30, 30))
-
-    seen_entities = camera.entities_seen_by(world, entity)
-
-    # All entities should be visible except the fourth one
-    for i, entity in enumerate(entities):
-        if i == 3:
-            assert entity not in seen_entities
-        else:
-            assert entity in seen_entities
 

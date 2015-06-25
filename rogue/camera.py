@@ -1,7 +1,7 @@
 import curses
 from collections import namedtuple
 from .rect import Rect
-from .debug import debug
+from . import ray
 
 class Camera(object):
     """ Draws the current view to the main game screen.
@@ -38,16 +38,6 @@ class Camera(object):
                 pos = self.world_to_screen(entity.x, entity.y)
                 window.addch(pos.y, pos.x, ord(str(entity)),
                         curses.color_pair(entity.color_pair))
-
-    def entities_seen_by(self, world, entity):
-        """ Return list of entities visible to entity. """
-        res = []
-        res.append(entity)
-        return res
-
-    def tiles_seen_by(self, world, entity):
-        """ Return dict {(x, y): Tile} of tiles visible to entity. """
-        pass
 
     def world_to_screen(self, x, y):
         """ Transform world coordinates to screen coordinates.

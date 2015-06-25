@@ -7,52 +7,49 @@ from collections import namedtuple
 from .tile import Tile
 
 
-def ray_cast(point, angle, world):
-    """ Return list of tiles and list of entities intersected by a ray shot out from
-        point at angle, the lists being sorted by the order the tiles
-        are intersected.
-
-        Stops when at a clear tile.
-
-        Returns the lists grouped in a tuple (tiles, entities)
-
-        The list of tiles is a list of tuples with the first element being a
-        tuple point (x, y) and the second element being the tile.
-
-        The list of entities will just be a plain list of entities.
+def ray_cast(point, angle, radius, world):
+    """ Return a list of (x, y) tuple points which the ray passes through.
+        Stops when at a wall tile or radius is reached.
+        Result will be sorted by tile visited first.
 
     Keyword Arguments:
-    point -- point at which to raycast from
-    angle -- angle in degrees at which to shoot the ray, 0 being +x axis
-    world -- current world
+    point  -- point at which to raycast from
+    angle  -- angle in degrees at which to shoot the ray, 0 being straight up
+    radius -- integer radius at which to stop casting the ray
+    world  -- current world
     """
 
-    Result = namedtuple("Result", ['tiles', 'entities'])
-    res = Result(tiles=[], entities=[])
+    res = []
 
-    # TODO: Handle angle properly, right now it can't handle multiples of 90 deg
-    slope = math.tan(math.radians(angle))
-    
-    if angle == 0:
-        slope = 0
-    if angle % 90 == 0:
-        pass
+    # Adjacent over hypotenuse (x coordinate)
+    o_h = math.sin(angle)
+    # Opposite over hypotenuse (y coordinate)
+    a_h = math.cos(angle)
 
-    x = 0
-    while True:
-        # Minus since y axis becomes more negative as we go up the axes
-        y = -math.floor(slope * x)
+    for h in range(radius):
+       x, y = round(o_h * h), round(a_h * h)
 
-        # Get tiles and entities at this point
-        x1, y1 = x + point.x, y + point.y
+       # Transform to world space
+       x1, y1 = x + point.x, y + point.y
+       
+       res.append((x1, y1))
 
-        if world.get_tile(x1, y1) == Tile.clear:
-            break
-
-        res.tiles.append(((x1, y1), world.get_tile(x1, y1)))
-        res.entities.extend(world.get_entities_at(x1, y1))
-
-        x += 1
+       # Break if we've gotten to a wall
+       if world.get_tile(x1, y1) == Tile.wall:
+           break
 
     return res
+
+def ray_cast_circle(point, radius, world, step=1):
+    """ Return the set of unique (x, y) tuple points which rays shot out at equal angle
+        intervals `step` from a given point `point` intersect.
+    """
+
+    res = []
+
+    for a in range(0, 360, step):
+        res.extend(ray_cast(point=point, radius=radius, angle=a, world=world))
+
+    # Ignore duplicates
+    return set(res)
 
