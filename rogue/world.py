@@ -257,8 +257,17 @@ class World(object):
 
         world = World(width, height)
 
-        # List of lists of points corresponding to walls in the game
-        # Each list in this list corresponds to walls of a feature (room, corridor, etc.)
+        """ List of lists of points corresponding to walls in the game
+
+        Each list in this list corresponds to walls of a feature (room, corridor, etc.)
+
+        What happens is each time a feature is generated, its list of wall tiles is
+        appended to this list. When we want to get a random wall tile to extend
+        a feature from we first choose a random list of wall tiles, and then
+        get the random wall tile from that list. This gives us an equal
+        chance of choosing a corridor and a room; there is usually
+        more chance of picking a room as they generally have more wall tiles.
+        """
         walls = []
 
         # Add initial room in center of map
