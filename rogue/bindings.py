@@ -37,7 +37,22 @@ def wait(game):
     queue.append("Rested for 1 tick...")
 
 def quit(game):
-    return 'quit'
+    """ Ask the player if they want to quit or not. """
+    queue.append("Are you sure you want to quit? (y/n)")
+    queue.draw(game.window)
+
+    while True:
+        key = game.window.getkey()
+        queue.clear()
+
+        if key == 'y':
+            return 'quit'
+        elif key == 'n':
+            return None
+        else:
+            queue.append("Please enter y or n")
+            queue.draw(game.window)
+
 
 def move(game, dirn):
     player = game.player
@@ -83,7 +98,7 @@ def down_floor(game):
                     room_x = game.player.x - 2, room_y = game.player.y - 2)
             # Put exit where the player is
             game.world.set_tile(game.player.x, game.player.y, Tile.up)
-       
+
             # Add player to the new world
             game.world.add_entity(game.player)
 
@@ -96,9 +111,9 @@ key_functions = {'e': views.inventory,
                  '?': views.help_general,
                  'q': quit,
 
-                 '<': up_floor, 
-                 '>': down_floor, 
-                 
+                 '<': up_floor,
+                 '>': down_floor,
+
                  Keys.up:         partial(move, dirn='up'),
                  Keys.down:       partial(move, dirn='down'),
                  Keys.left:       partial(move, dirn='left'),
@@ -107,4 +122,3 @@ key_functions = {'e': views.inventory,
                  Keys.down_left:  partial(move, dirn='downleft'),
                  Keys.up_right:   partial(move, dirn='upright'),
                  Keys.down_right: partial(move, dirn='downright')}
-

@@ -22,6 +22,10 @@ class Game(object):
         items_file = os.path.join(os.path.dirname(__file__), 'data/items.json')
         self.items = Item.get_all_json(open(items_file))
 
+        # Set the queue screen position
+        queue.set_position(3, 20)
+        queue.lines = 7
+
         """ World setup. """
         # Current floor in the game, 0 is the first floor, the index for self.worlds
         self.world_index = 0
@@ -63,7 +67,7 @@ class Game(object):
         self.window.keypad(1)
         curses.curs_set(0)
         colors.start_colors()
-        
+
         while True:
             if self.update() == "quit":
                 return
@@ -75,10 +79,10 @@ class Game(object):
         views.hud(self)
 
         # Refresh the messages on screen
-        queue.draw(self.window, x=3, y=20, lines=7)
+        queue.draw(self.window)
 
         key = self.window.getkey()
-       
+
         # Get function depending on key pressed
         fn = bindings.key_functions.get(key)
         # Only execute if function exists for that key
@@ -93,7 +97,7 @@ class Game(object):
     @property
     def world(self):
         """ Get the current game world at world_index.
-        
+
         Return None of no world at self.world_index.
         """
         return self.worlds.get(self.world_index)
