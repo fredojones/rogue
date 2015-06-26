@@ -214,6 +214,8 @@ class World(object):
 
                 Return a tuple of the wall tile, and the direction
                 toward the clear tile.
+
+                Return False if no walls found that are adjacent to clear tile
             """
 
             def direction_to_clear_tile(point):
@@ -241,11 +243,13 @@ class World(object):
 
             # Loop through each wall until wall is found that is
             # adjacent to a clear tile, then return the direction and wall
-            while True:
+            for _ in range(100):
                 wall = random.choice(walls)
                 dirn = direction_to_clear_tile(wall)
                 if dirn is not None:
                     return (wall, dirn)
+            else:
+                return False
 
 
         # Number of attempts to add a new feature
@@ -253,18 +257,25 @@ class World(object):
 
         world = World(width, height)
 
-        # List of points corresponding to walls in the game
+        # List of lists of points corresponding to walls in the game
+        # Each list in this list corresponds to walls of a feature (room, corridor, etc.)
         walls = []
 
         # Add initial room in center of map
         r = room.rect_room(8, 6)
-        walls.extend(get_walls((room_x, room_y), r))
+        walls.append(get_walls((room_x, room_y), r))
         world.add_room(room_x, room_y, r)
         world.set_tile(room_x + 2, room_y + 2, Tile.up)
 
         # Generate the world!
         for _ in range(MAX_ITERS):
-            walldirn = pick_random_wall(walls)
+            # Pick random feature to pick random wall from
+            wallslist = random.choice(walls)
+            walldirn = pick_random_wall(wallslist)
+
+            # Skip if no walldirn found
+            if not walldirn:
+                continue
 
             x1, y1 = walldirn[0]
 
@@ -310,7 +321,7 @@ class World(object):
                     world.add_room(x1, y1, room.cardinal_corridor(direction, 3))
 
                     # Add new walls to the walls list
-                    walls.extend(get_walls((x1 + x_offs, y1 + y_offs), r))
+                    walls.append(get_walls((x1 + x_offs, y1 + y_offs), r))
 
             else:
                 # build corridor
@@ -348,7 +359,7 @@ class World(object):
                     world.set_tile(x1, y1, Tile.door)
 
                     # Add new walls to the walls list
-                    walls.extend(get_walls((x1, y1), r))
+                    walls.append(get_walls((x1, y1), corridor))
 
 
         # Patch up all gaps into the outside "world"
@@ -366,6 +377,7 @@ class World(object):
 
                         if world.get_tile(x + dx, y + dy) == Tile.clear:
                             world.set_tile(x + dx, y + dy, Tile.wall)
+
 
         # Get random floor tiles
         floor_tiles = list(map(lambda x: x[0],
