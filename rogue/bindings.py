@@ -102,6 +102,22 @@ def down_floor(game):
             # Add player to the new world
             game.world.add_entity(game.player)
 
+def open_door(game):
+    """ Open door if player is standing adjacent to it (can also be done
+        by walking into the door). """
+    tiles = game.world.get_tiles_surrounding(game.player.x, game.player.y)
+
+    for p, tile in tiles.items():
+        if tile == Tile.door:
+            game.world.set_tile(*p, tile=Tile.door_open)
+
+def close_door(game):
+    """ Close door if player is standing adjacent to it. """
+    tiles = game.world.get_tiles_surrounding(game.player.x, game.player.y)
+
+    for p, tile in tiles.items():
+        if tile == Tile.door_open:
+            game.world.set_tile(*p, tile=Tile.door)
 
 """ Dictionary between the key to enter a given function. """
 key_functions = {'e': views.inventory,
@@ -113,6 +129,9 @@ key_functions = {'e': views.inventory,
 
                  '<': up_floor,
                  '>': down_floor,
+
+                 'O': open_door,
+                 'C': close_door,
 
                  Keys.up:         partial(move, dirn='up'),
                  Keys.down:       partial(move, dirn='down'),

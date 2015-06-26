@@ -77,7 +77,7 @@ class Entity(object):
 
     def level(self):
         """ Calculate the entities level from current exp.
-        
+
         Return the level for which the entities current exp is greater than
         (or equal to) that level, but less than is required for the level
         above it. If the current exp is higher than any level, return the
@@ -99,7 +99,8 @@ class Entity(object):
         return 0
 
     def move(self, x, y, world):
-        """ Move to non-wall space x, y, in the world.
+        """ Move to non-wall space x, y in the world. If the space is a door,
+            open it instead of moving.
 
         Keyword arguments:
         x -- coordinate to move to along the x axis
@@ -116,6 +117,10 @@ class Entity(object):
             return True
 
         if world.is_wall(x, y):
+            return False
+
+        if world.get_tile(x, y) == Tile.door:
+            world.set_tile(x, y, Tile.door_open)
             return False
 
         # Don't allow movement into solid entity
@@ -143,7 +148,7 @@ class Entity(object):
 
     def random_floor_tile(self, world):
         """ Place the entity on a random floor tile in the world.
-        
+
         Probably best not to use this but instead cache all the floor tiles,
         or else pretty slow for a large world.
         """
@@ -193,7 +198,7 @@ class Entity(object):
 
     def equip(self, item):
         """ Equip non-fist item into slot given by item.slot
-        
+
         Also adds (not unarmed) item if not already in inventory.
 
         Raises ValueError if the item isn't an equipment, or
@@ -225,13 +230,13 @@ class Entity(object):
             raise InventoryError("Food must be in inventory to be eaten")
         if item.kind != 'food':
             raise ValueError("Cannot eat non-food item")
-       
+
         self.health += item.stats['hp']
         self.remove_item(item)
 
     def get_slot(self, slot):
         """ Get equipment from given slot.
-        
+
         Returns None if nothing equipped in slot.
         """
         return self.equipment.get(slot, None)
@@ -249,4 +254,3 @@ class Entity(object):
 
     def __str__(self):
         return self.tile
-

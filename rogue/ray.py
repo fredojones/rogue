@@ -9,7 +9,7 @@ from .tile import Tile
 
 def ray_cast(point, angle, radius, world):
     """ Return a list of (x, y) tuple points which the ray passes through.
-        Stops when at a wall tile or radius is reached.
+        Stops when at a wall tile, door tile, or radius is reached.
         Result will be sorted by tile visited first.
 
     Keyword Arguments:
@@ -31,11 +31,12 @@ def ray_cast(point, angle, radius, world):
 
        # Transform to world space
        x1, y1 = x + point[0], y + point[1]
-       
+
        res.append((x1, y1))
 
        # Break if we've gotten to a wall
-       if world.get_tile(x1, y1) == Tile.wall:
+       tile = world.get_tile(x1, y1)
+       if tile == Tile.wall or tile == Tile.door:
            break
 
     return res
@@ -52,4 +53,3 @@ def ray_cast_circle(point, radius, world, step=1):
 
     # Ignore duplicates
     return set(res)
-

@@ -56,4 +56,3 @@ def cardinal_corridor(dirn, length):
             room[(-x,  0 )] = Tile.floor
             room[(-x, +1)] = Tile.wall
         return room
-

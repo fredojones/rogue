@@ -6,7 +6,9 @@ class Tile():
     clear = ' '
     up    = '<'
     down  = '>'
-    
+    door  = '+'
+    door_open = ','
+
     corpse = ';'
     enemy = 'g'
     player = '@'

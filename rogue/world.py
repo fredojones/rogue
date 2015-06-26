@@ -115,6 +115,17 @@ class World(object):
                 result.extend(self.get_entities_at(x + dx, y + dy))
         return result
 
+    def get_tiles_surrounding(self, x, y):
+        """ Get dict of [(x, y) : Tile] in the 8 squares surrounding x, y. """
+        result = {}
+        for dx in range(-1, 2):
+            for dy in range(-1, 2):
+                # Skip square at (x, y)
+                if dx == 0 and dy == 0:
+                    continue
+                result[(x + dx, y + dy)] = self.get_tile(x + dx, y + dy)
+        return result
+
     def remove_entity(self, entity):
         """ Remove given entity from the world. """
         self.entities.remove(entity)
@@ -173,7 +184,7 @@ class World(object):
         room_x -- x position of first room added
         room_y -- y position of first room added
         """
-        
+
         def get_walls(origin, tiles):
             """ Get list of points corresponding to the walls added
                 by added the room tiles at origin.
@@ -199,7 +210,7 @@ class World(object):
             """ Choose a random wall tile that is adjacent (non-diagonal)
                 to a clear (empty space) tile.
 
-                walls is a list of points corresponding to walls in the world. 
+                walls is a list of points corresponding to walls in the world.
 
                 Return a tuple of the wall tile, and the direction
                 toward the clear tile.
@@ -254,7 +265,7 @@ class World(object):
         # Generate the world!
         for _ in range(MAX_ITERS):
             walldirn = pick_random_wall(walls)
-                
+
             x1, y1 = walldirn[0]
 
             if random.random() > 0.2:
@@ -333,10 +344,13 @@ class World(object):
                     # Add the corridor
                     world.add_room(x1, y1, corridor)
 
+                    # Add a door connecting the room to the corridor
+                    world.set_tile(x1, y1, Tile.door)
+
                     # Add new walls to the walls list
                     walls.extend(get_walls((x1, y1), r))
-        
-        
+
+
         # Patch up all gaps into the outside "world"
         for point, tile in world.tiles.items():
             x, y = point

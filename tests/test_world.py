@@ -100,6 +100,14 @@ def test_getting_entities_surrounding(world, entity):
     assert entity3 in entities
     assert entity4 not in entities
 
+def test_get_tiles_surrounding(world):
+    world.set_tile(0, 1, Tile.floor)
+    world.set_tile(0, 2, Tile.floor)
+    world.set_tile(1, 2, Tile.wall)
+    res = world.get_tiles_surrounding(1, 1).values()
+    assert Tile.wall in res
+    assert Tile.floor in res
+
 def test_adding_rectangular_room(world):
     world.add_room(10, 10, room.rect_room(width=10, height=12))
     assert world.get_tile(10, 10) == Tile.wall
@@ -109,4 +117,3 @@ def test_adding_rectangular_room(world):
 def test_dungeon_world_has_floor_tiles(dungeon):
     dungeon.random_floor_tile()
 """
-

@@ -18,7 +18,7 @@ def entity2():
 
 @pytest.fixture
 def world():
-    return World(width=100, height=100)
+    return World(width=200, height=200)
 
 @pytest.fixture
 def item():
@@ -66,6 +66,14 @@ def test_move_non_solid_entity_into_other_solid_entity(entity, entity2, world):
     assert entity.x == entity2.x
     assert entity.y == entity2.y
 
+def test_move_entity_into_door_opens_door(entity, world):
+    x, y = 102, 104
+    world.set_tile(x, y, Tile.door)
+    assert not entity.move(x, y, world)
+    # Door should have now opened
+    #assert world.get_tile(x, y)
+    assert entity.move(x, y, world)
+
 def test_calculating_damage(entity):
     damage = entity.calculate_damage(entity)
     assert damage is not None
@@ -78,7 +86,7 @@ def test_entity_becomes_corpse_on_next_update_when_dead(entity, world):
     game.world = world
     entity.update(game)
     assert entity.tag == 'corpse'
-    
+
 def test_adding_items_to_inventory(entity, item):
     entity.add_item(item)
     entity.add_item(item)
@@ -113,7 +121,7 @@ def test_equipping_equipment(entity, equipment):
     assert entity.get_slot(equipment.slot) == unarmed
 
 def test_equipping_non_equipment_raises_error(entity, item):
-    with pytest.raises(EquipmentError): 
+    with pytest.raises(EquipmentError):
         entity.equip(item)
 
 def test_adding_fist_to_inventory_raises_error(entity):
@@ -162,11 +170,11 @@ def test_eating_food_increases_health_and_destroys_item(entity, item):
 def test_eating_non_food_raises_value_error(entity, equipment):
     entity.add_item(equipment)
     with pytest.raises(ValueError):
-        entity.eat(equipment) 
+        entity.eat(equipment)
 
 def test_eating_food_not_in_inventory_raises_error(entity, item):
     with pytest.raises(InventoryError):
-        entity.eat(item) 
+        entity.eat(item)
 
 def test_raises_key_error_if_food_doesnt_have_hp_stat(entity, item):
     del item.stats['hp']
