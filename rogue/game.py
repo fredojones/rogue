@@ -6,7 +6,6 @@ from .world  import World
 from .enemy  import Enemy
 from .camera import Camera
 from .player import Player
-from .keys   import Keys
 from .queue  import queue
 from .item   import Item
 from . import bindings

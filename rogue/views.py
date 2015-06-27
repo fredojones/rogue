@@ -53,10 +53,10 @@ def inventory(game):
             # If equipped, put a little star next to the item
             if game.player.get_slot('right hand') == item:
                 game.window.addstr(i + y - scrolled, x - 2, '*')
-        
+
         key = game.window.getkey()
 
-        if key == 'k':
+        if key == 'k' or key == 'KEY_UP':
             if selection > 0:
                 selection -= 1
 
@@ -66,10 +66,10 @@ def inventory(game):
 
             game.window.clear()
 
-        if key == 'j':
+        if key == 'j' or key == 'KEY_DOWN':
             if selection < len(game.player.items) - 1:
                 selection += 1
-            
+
             # If the user tries to go below the screen, scroll down by one
             if selection > scrolled + max_items - 1:
                 scrolled += 1
@@ -121,7 +121,7 @@ def character(game):
         game.window.addstr('\n\nWielding a {} in the right hand'.format(
             game.player.get_slot('right hand').name))
         game.window.addstr('\n\n{} hp'.format(game.player.health))
-        
+
         key = game.window.getkey()
 
         if key == 'q':
@@ -158,11 +158,12 @@ def hud(game):
 
 def help_general(game):
     """ Help in world view. """
+    # TODO: Update this
     game.window.clear()
 
     game.window.addstr(1, 1, "Movement controls:")
     game.window.addstr(2, 1, "u: up, ul: up left, dr: down right, etc.")
-    
+
     game.window.addstr(3, 1, "ul u ur")
     game.window.addstr(4, 1, "l     r")
     game.window.addstr(5, 1, "dl d dr")
@@ -174,12 +175,9 @@ def help_general(game):
     game.window.addstr(10, 1, "m     .")
 
     game.window.addstr(12, 1, "move towards enemies to attack them")
-    
+
     game.window.addstr(14, 1, "press e to enter inventory view")
     game.window.addstr(15, 1, "press ? for help")
     game.window.addstr(15, 1, "press q to quit")
 
     game.window.getch()
-
-
-

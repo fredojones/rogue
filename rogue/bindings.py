@@ -3,13 +3,12 @@ from functools import partial
 
 from . import views
 from .queue import queue
-from .keys import Keys
 from .world import World
 from .tile import Tile
 
 
 def get_loot(game):
-    """ Get loot from corpse. """
+    """ Get loot from corpse that player is standing on. """
     x, y = game.player.x, game.player.y
 
     entities = game.world.get_entities_at(x, y)
@@ -55,6 +54,10 @@ def quit(game):
 
 
 def move(game, dirn):
+    """ Issue a player.attack_move(..) command in the direction given by dirn.
+
+        Where dirn is 'up' for up, 'left' for left, 'upleft' for up left etc.
+    """
     player = game.player
 
     # Don't move if dead
@@ -79,6 +82,7 @@ def move(game, dirn):
         player.attack_move(player.x + 1, player.y + 1, game.world)
 
 def up_floor(game):
+    """ Move the player up a world if they are on an up tile and not on lowest floor. """
     if game.world.get_tile(game.player.x, game.player.y) == Tile.up:
         if game.world_index > 0:
             game.world_index -= 1
@@ -87,6 +91,7 @@ def up_floor(game):
             # TODO: ask player if they want to quit
 
 def down_floor(game):
+    """ Move the player down a world if they are on an down tile and not on highest floor. """
     if game.world.get_tile(game.player.x, game.player.y) == Tile.down:
         game.world_index += 1
 
@@ -133,11 +138,15 @@ key_functions = {'e': views.inventory,
                  'O': open_door,
                  'C': close_door,
 
-                 Keys.up:         partial(move, dirn='up'),
-                 Keys.down:       partial(move, dirn='down'),
-                 Keys.left:       partial(move, dirn='left'),
-                 Keys.right:      partial(move, dirn='right'),
-                 Keys.up_left:    partial(move, dirn='upleft'),
-                 Keys.down_left:  partial(move, dirn='downleft'),
-                 Keys.up_right:   partial(move, dirn='upright'),
-                 Keys.down_right: partial(move, dirn='downright')}
+                 'k':         partial(move, dirn='up'),
+                 'KEY_UP':    partial(move, dirn='up'),
+                 'j':         partial(move, dirn='down'),
+                 'KEY_DOWN':  partial(move, dirn='down'),
+                 'h':         partial(move, dirn='left'),
+                 'KEY_LEFT':  partial(move, dirn='left'),
+                 'l':         partial(move, dirn='right'),
+                 'KEY_RIGHT': partial(move, dirn='right'),
+                 'y':         partial(move, dirn='upleft'),
+                 'b':         partial(move, dirn='downleft'),
+                 'u':         partial(move, dirn='upright'),
+                 'n':         partial(move, dirn='downright')}

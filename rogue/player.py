@@ -1,7 +1,6 @@
 import random
 from .entity import Entity
 from .tile   import Tile
-from .keys   import Keys
 from .queue  import queue
 
 class Player(Entity):
@@ -10,7 +9,7 @@ class Player(Entity):
     def __init__(self, x=0, y=0):
         super().__init__(x, y, tile=Tile.player, solid=True,
                          tag='player', name='player', color_pair=10)
-        
+
     def attack_move(self, x, y, world):
         """ Moves as normal but also attacks enemy if enemy is in square
             being moved to.
@@ -24,7 +23,7 @@ class Player(Entity):
             entity.add_health(-damage)
             queue.append("hit {} with {} for {} hp!".format(entity.name,
                 self.get_slot("right hand").name, damage))
-           
+
             # Entity dies
             if entity.health <= 0:
                 # Prevent entity from attacking on its last turn (i.e. while dead)
@@ -53,8 +52,7 @@ class Player(Entity):
 
         Movement is done in bindings.py
         """
-        
+
         game.camera.center_on(self, game.world)
 
         super().update(game)
-
