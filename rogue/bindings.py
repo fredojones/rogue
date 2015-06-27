@@ -87,8 +87,7 @@ def up_floor(game):
         if game.world_index > 0:
             game.world_index -= 1
         else:
-            pass
-            # TODO: ask player if they want to quit
+            return quit(game)
 
 def down_floor(game):
     """ Move the player down a world if they are on an down tile and not on highest floor. """
