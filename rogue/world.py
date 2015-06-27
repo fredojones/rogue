@@ -370,8 +370,9 @@ class World(object):
                     # Add the corridor
                     world.add_room(x1, y1, corridor)
 
-                    # Add a door connecting the room to the corridor
-                    world.set_tile(x1, y1, Tile.door)
+                    # Sometimes add a door connecting the room to the corridor
+                    if random.random() > 0.4:
+                        world.set_tile(x1, y1, Tile.door)
 
                     # Add new walls to the walls list
                     walls.append(get_walls((x1, y1), corridor))
