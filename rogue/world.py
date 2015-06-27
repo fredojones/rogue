@@ -10,9 +10,14 @@ class World(object):
     Attributes:
     width -- width of the game world
     height -- same for height
+
     tiles -- dictionary holding the information about tiles in the game
              keys: tuple (x, y) denoting position
              values: Tile object representing tile at that point
+
+    tiles_seen -- set of (x, y) points that have been seen at some point,
+                  tiles at these points will be rendered in grey.
+
     entities -- list of Entity object in the world
     """
 
@@ -20,6 +25,7 @@ class World(object):
         self.width = width
         self.height = height
         self.tiles = self.Empty_Tiles(width, height, tile)
+        self.tiles_seen = set()
         self.entities = []
 
     def set_tile(self, x, y, tile):

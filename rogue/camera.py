@@ -9,13 +9,10 @@ class Camera(object):
 
     Attributes:
     view -- Rect containing the current view of the camera
-    tiles_seen -- set of (x, y) points that have been seen at some point,
-                  tiles at these points will be rendered in grey.
     """
 
     def __init__(self, x=0, y=0, width=51, height=15):
         self.view = Rect(x, y, width, height)
-        self.tiles_seen = set()
 
     def draw(self, window, world, point):
         """ Render world tiles and then entities to window.
@@ -30,7 +27,7 @@ class Camera(object):
         seen = ray.ray_cast_circle(point=point, radius=9, world=world)
 
         # Add to the set of seen tiles
-        self.tiles_seen = self.tiles_seen.union(seen)
+        world.tiles_seen = world.tiles_seen.union(seen)
 
         # Draw visible tiles
         for x in range(self.view.width):
@@ -44,7 +41,7 @@ class Camera(object):
                             curses.color_pair(30))
 
                 # If seen before, render in grey
-                elif (x1, y1) in self.tiles_seen:
+                elif (x1, y1) in world.tiles_seen:
                     window.addch(y, x, ord(world.get_tile(x1, y1)),
                             curses.color_pair(40))
 
