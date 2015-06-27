@@ -290,8 +290,8 @@ class World(object):
 
             if random.random() > 0.2:
                 # build room
-                width = random.randrange(8, 16)
-                height = random.randrange(8, 16)
+                width = random.randrange(5, 12)
+                height = random.randrange(5, 12)
                 r = room.rect_room(width, height)
 
                 def fits_in_space(start, direction, room):
@@ -334,7 +334,7 @@ class World(object):
 
             else:
                 # build corridor
-                length = random.randrange(6, 10)
+                length = random.randrange(6, 14)
                 corridor = room.cardinal_corridor(walldirn[1], length)
 
                 def fits_in_space(start, direction, length, corridor):
