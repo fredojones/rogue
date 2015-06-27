@@ -3,7 +3,6 @@ from rogue.player import Player
 from rogue.enemy  import Enemy
 from rogue.world  import World
 from rogue.tile   import Tile
-from rogue.keys   import Keys
 from rogue.camera import Camera
 from rogue.bindings import key_functions
 
@@ -40,7 +39,7 @@ def test_player_properly_initialized(player):
     assert player.tile == Tile.player
 
 """
-    UNRELIABLE test as calculate_damage sometimes returns zero (so no damage done) 
+    UNRELIABLE test as calculate_damage sometimes returns zero (so no damage done)
 def test_moving_to_enemy_deals_damage_to_enemy(player, enemy, world):
     world.add_entity(player)
     world.add_entity(enemy)
@@ -51,11 +50,10 @@ def test_moving_to_enemy_deals_damage_to_enemy(player, enemy, world):
 """
 
 def test_moving_into_empty_space(game):
-    key_functions.get(Keys.down)(game)
+    key_functions.get('j')(game)
     assert game.player.y == 1
 
 def test_moving_into_occupied_space(game):
     game.world.set_tile(0, 1, Tile.wall)
-    key_functions.get(Keys.down)(game)
+    key_functions.get('j')(game)
     assert game.player.y == 0
-
