@@ -158,21 +158,9 @@ def hud(game):
 
 def help_general(game):
     """ Help in world view. """
-    # TODO: Update this
     game.window.clear()
 
-    game.window.addstr(1, 1, "Movement controls:")
-    game.window.addstr(2, 1, "u: up, ul: up left, dr: down right, etc.")
-
-    game.window.addstr(3, 1, "ul u ur")
-    game.window.addstr(4, 1, "l     r")
-    game.window.addstr(5, 1, "dl d dr")
-
-    game.window.addstr(7, 1, "Corresponds to")
-
-    game.window.addstr(8, 1, "u  i  o")
-    game.window.addstr(9, 1, "j  k  l")
-    game.window.addstr(10, 1, "m     .")
+    game.window.addstr(1, 1, "Use vim keys or arrows for movement")
 
     game.window.addstr(12, 1, "move towards enemies to attack them")
 

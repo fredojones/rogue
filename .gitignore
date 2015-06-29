@@ -1,9 +1,7 @@
 __pycache__
-\#TODO.org\#
 *.pyc
 *.egg-info
 venv
-todo
 dist
 build
 tags
