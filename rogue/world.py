@@ -19,12 +19,15 @@ class World(object):
                   tiles at these points will be rendered in grey.
 
     entities -- list of Entity object in the world
+
+    dark -- true if the world is dark, i.e. shorter "render" distance
     """
 
-    def __init__(self, width, height, tile=Tile.clear):
+    def __init__(self, width, height, default_tile=Tile.clear, dark=False):
         self.width = width
         self.height = height
-        self.tiles = self.Empty_Tiles(width, height, tile)
+        self.tiles = self.Empty_Tiles(width, height, default_tile)
+        self.dark = dark
         self.tiles_seen = set()
         self.entities = []
 
@@ -261,7 +264,13 @@ class World(object):
         # Number of attempts to add a new feature
         MAX_ITERS = 1000
 
-        world = World(width, height)
+        # Initialize the new world, with a random chance to be a "dark" world
+        if random.random() > 0.8:
+            dark = True
+        else:
+            dark = False
+
+        world = World(width, height, dark=dark)
 
         """ List of lists of points corresponding to walls in the game
 

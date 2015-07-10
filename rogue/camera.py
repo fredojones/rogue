@@ -23,8 +23,14 @@ class Camera(object):
         point -- (x, y) point at which to raycast player's view from
         """
 
+        # Don't raycast as far in a dark world
+        if world.dark:
+            radius = 2
+        else:
+            radius = 9
+
         # Raycast to see which tiles are seen
-        seen = ray.ray_cast_circle(point=point, radius=9, world=world)
+        seen = ray.ray_cast_circle(point=point, radius=radius, world=world)
 
         # Add to the set of seen tiles
         world.tiles_seen = world.tiles_seen.union(seen)
