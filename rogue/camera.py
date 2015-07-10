@@ -25,7 +25,7 @@ class Camera(object):
 
         # Don't raycast as far in a dark world
         if world.dark:
-            radius = 2
+            radius = 3
         else:
             radius = 9
 
@@ -41,13 +41,13 @@ class Camera(object):
                 # Transform to world coordinates
                 x1, y1 = x + self.view.x, y + self.view.y
 
-                # Only draw if seen by the raycaster
+                # Only draw if seen by the raycaster this frame
                 if (x1, y1) in seen:
                     window.addch(y, x, ord(world.get_tile(x1, y1)),
                             curses.color_pair(30))
 
-                # If seen before, render in grey
-                elif (x1, y1) in world.tiles_seen:
+                # If seen some frame before (and not in dark world), render in grey
+                elif not world.dark and (x1, y1) in world.tiles_seen:
                     window.addch(y, x, ord(world.get_tile(x1, y1)),
                             curses.color_pair(40))
 

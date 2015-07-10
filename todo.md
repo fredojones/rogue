@@ -1,7 +1,9 @@
 TODO
 ====
 
-- Random chance that generated worlds are "dark", i.e. shorter fov distance, and
+- Make up stairs in new worlds correspond with locations of down stairs in previous world
+
+- [DONE] Random chance that generated worlds are "dark", i.e. shorter fov distance, and
   no seen tiles mechanic.
   - Maybe also torches that can be mounted on floor/wall and held in left hand
 

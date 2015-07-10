@@ -86,6 +86,10 @@ def up_floor(game):
     if game.world.get_tile(game.player.x, game.player.y) == Tile.up:
         if game.world_index > 0:
             game.world_index -= 1
+
+            # Show message if new world is dark
+            if game.world.dark:
+                queue.append("This place is dark...you need a torch to see far")
         else:
             return quit(game)
 
@@ -105,6 +109,10 @@ def down_floor(game):
 
             # Add player to the new world
             game.world.add_entity(game.player)
+
+        # Show message if new world is dark
+        if game.world.dark:
+            queue.append("This place is dark...you need a torch to see far")
 
 def open_door(game):
     """ Open door if player is standing adjacent to it (can also be done

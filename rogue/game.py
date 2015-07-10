@@ -36,6 +36,9 @@ class Game(object):
         self.worlds[0] = World.Dungeon_World(width=1000, height=1000,
                 room_x = 500, room_y = 500)
 
+        # Make first world always light
+        self.worlds[0].dark = True
+
         self.camera = Camera()
 
         # Setup the player
