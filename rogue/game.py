@@ -68,7 +68,9 @@ class Game(object):
         self.window = window
         self.window.keypad(1)
         curses.curs_set(0)
-        colors.start_colors()
+
+        if curses.has_colors():
+            colors.start_colors()
 
         while True:
             if self.update() == "quit":
