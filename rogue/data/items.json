@@ -1,41 +1,52 @@
 
 {
-  "items" : [
-  {
-    "name" : "worn axe",
-    "desc" : "A worn single-bladed axe with the handle curved like a scythe. It feels misweighted due to the heavy blade, you feel clumsy holding it. The blade edge shines from wear.",
-    "equippable" : true,
-    "kind" : "weapon",
-    "stats" : {
-      "attack" : 8
-    }
-  },
-  {
-    "name" : "rusty knife",
-    "desc" : "A small rusted shank. It is worn and cheaply made, parts of the knife edge are jagged and rusted, making it look nightmarish. The leather on the handle is stained from sweat.",
-    "equippable" : true,
-    "kind" : "weapon",
-    "stats" : {
-      "attack" : 8
-    }
-  },
-  {
-    "name" : "steel longsword",
-    "desc" : "A clean steel longsword. It is of very high craftsdwarfship. The blade is flat and clean, with a razor sharp edge, running down to a cross-guard. A makers mark can be seen etched on the blade close to the handle: a capital H superimposed over the letter B",
-    "equippable" : true,
-    "kind" : "weapon",
-    "stats" : {
-      "attack" : 14
-    }
-  },
-  {
-    "name" : "apple",
-    "desc" : "A rough, powdery apple",
-    "equippable" : false,
-    "kind" : "food",
-    "stats" : {
-      "hp" : 20
-    }
-  }
-    ]
+	"items" : [
+	{
+		"name" : "worn axe",
+		"desc" : "A worn single-bladed axe with the handle curved like a scythe. It feels misweighted due to the heavy blade, you feel clumsy holding it. The blade edge shines from wear.",
+		"equippable" : true,
+		"kind" : "weapon",
+		"stats" : {
+			"attack" : 8
+		}
+	},
+	{
+		"name" : "rusty knife",
+		"desc" : "A small rusted shank. It is worn and cheaply made, parts of the knife edge are jagged and rusted, making it look nightmarish. The leather on the handle is stained from sweat.",
+		"equippable" : true,
+		"kind" : "weapon",
+		"stats" : {
+			"attack" : 8
+		}
+	},
+	{
+		"name" : "steel longsword",
+		"desc" : "A clean steel longsword. It is of very high craftsdwarfship. The blade is flat and clean, with a razor sharp edge, running down to a cross-guard. A makers mark can be seen etched on the blade close to the handle: a capital H superimposed over the letter B",
+		"equippable" : true,
+		"kind" : "weapon",
+		"stats" : {
+			"attack" : 14
+		}
+	},
+	{
+		"name" : "apple",
+		"desc" : "A rough, powdery apple",
+		"equippable" : false,
+		"kind" : "food",
+		"stats" : {
+			"hp" : 20
+		}
+	},
+	{
+		"name" : "throwing knives",
+		"desc" : "Sharp looking throwing knives",
+		"equippable" : true,
+		"slot" : "thrown",
+		"throwable" : true,
+		"kind" : "weapon",
+		"stats" : {
+			"attack" : 10
+		}
+	}
+	]
 }

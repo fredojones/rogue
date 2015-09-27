@@ -58,6 +58,12 @@ def throw(game):
     Only works on map screen!
     """
 
+    # Get throwing weapon
+    thrown_weapon = game.player.get_slot('thrown')
+    if thrown_weapon is None:
+        queue.append("No throwing weapon equipped!")
+        return
+
     # Get enemies in range
     maxrange = 6
 
@@ -91,7 +97,17 @@ def throw(game):
             if selected_index < len(enemies_in_range) - 1:
                 selected_index += 1
         elif key == 'f':
-            queue.append("Fired!!!")
+            dmg = game.player.calculate_damage(selected, slot="thrown")
+            queue.append("Threw the {} for {} damage!!!".format(
+                         thrown_weapon.name, str(dmg)))
+
+            if thrown_weapon.quantity > 0:
+                thrown_weapon.quantity -= 1
+
+            if thrown_weapon.quantity == 0:
+                game.player.unequip(thrown_weapon)
+                game.player.remove_item(thrown_weapon)
+
             break
         elif key == 'q':
             return

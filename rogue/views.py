@@ -48,10 +48,16 @@ def inventory(game):
 
         # Print each item in inventory
         for i, item in items:
-            game.window.addstr(i + y - scrolled, x, '{}: {}\n'.format(i, item.name))
+            # If more than 1, put the quantity
+            if item.quantity > 1:
+                formatted = '{}: {} x {}\n'.format(i, item.quantity, item.name)
+            else:
+                formatted = '{}: {}\n'.format(i, item.name)
+
+            game.window.addstr(i + y - scrolled, x, formatted)
 
             # If equipped, put a little star next to the item
-            if game.player.get_slot('right hand') == item:
+            if item in game.player.equipment.values():
                 game.window.addstr(i + y - scrolled, x - 2, '*')
 
         key = game.window.getkey()
@@ -155,6 +161,13 @@ def hud(game):
     # Display the current held weapon
     game.window.addstr(y + 4, x, 'right hand: {}'.format(
         game.player.get_slot('right hand').name))
+
+    thrown = game.player.get_slot('thrown')
+    if thrown is not None:
+        formatted = 'thrown: {} x {}'.format(thrown.quantity, thrown.name)
+    else:
+        formatted = 'thrown: none'
+    game.window.addstr(y + 5, x, formatted)
 
 def help_general(game):
     """ Help in world view. """

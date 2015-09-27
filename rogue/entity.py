@@ -167,9 +167,9 @@ class Entity(object):
         if self.health <= 0:
             self.die()
 
-    def calculate_damage(self, entity):
-        """ Calculate attack damage done to other entity, using modified
-            FF's algorithm.
+    def calculate_damage(self, entity, slot="right hand"):
+        """ Calculate attack damage done to other entity using weapon
+            in `slot` (default: "right hand"), using modified FF algorithm.
         """
         weapon_damage = self.get_slot("right hand").stats["attack"]
         attacker = self.level() / 2 + weapon_damage
@@ -221,8 +221,9 @@ class Entity(object):
         if item.slot in self.equipment:
             del self.equipment[item.slot]
 
-        # Reset to fists
-        self.equipment[item.slot] = _item.unarmed
+        # Reset to fists if right hand
+        if item.slot == "right hand":
+            self.equipment[item.slot] = _item.unarmed
 
     def eat(self, item):
         """ Eat the given object with kind='food' raising the player's hp. """

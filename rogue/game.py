@@ -50,6 +50,11 @@ class Game(object):
         self.player.equip(deepcopy(self.items['steel longsword']))
         self.player.add_item(deepcopy(self.items['worn axe']))
         self.player.add_item(deepcopy(self.items['apple']))
+
+        knives = deepcopy(self.items['throwing knives'])
+        knives.quantity = 5
+        self.player.add_item(knives)
+
         self.world.add_entity(self.player)
 
         self.camera.center_on(self.player, self.world)
