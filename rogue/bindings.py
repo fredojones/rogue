@@ -52,34 +52,52 @@ def quit(game):
             queue.append("Please enter y or n")
             queue.draw(game.window)
 
-
-def move(game, dirn):
-    """ Issue a player.attack_move(..) command in the direction given by dirn.
-
-        Where dirn is 'up' for up, 'left' for left, 'upleft' for up left etc.
+def throw(game):
+    """ Throw/fire selected weapon letting player select which enemy.
+    
+    Only works on map screen!
     """
-    player = game.player
 
-    # Don't move if dead
-    if player.dead:
+    # Get enemies in range
+    maxrange = 6
+
+    enemies_in_range = list(filter(lambda enemy: game.player.distance(enemy) < maxrange,
+                                   game.world.get_entities_of_tag('enemy')))
+
+    # Abort if there are no enemies
+    if len(enemies_in_range) == 0:
         return
 
-    if dirn == 'up':
-        player.attack_move(player.x, player.y - 1, game.world)
-    if dirn == 'down':
-        player.attack_move(player.x, player.y + 1, game.world)
-    if dirn == 'left':
-        player.attack_move(player.x - 1, player.y, game.world)
-    if dirn == 'right':
-        player.attack_move(player.x + 1, player.y, game.world)
-    if dirn == 'upleft':
-        player.attack_move(player.x - 1, player.y - 1, game.world)
-    if dirn == 'downleft':
-        player.attack_move(player.x - 1, player.y + 1, game.world)
-    if dirn == 'upright':
-        player.attack_move(player.x + 1, player.y - 1, game.world)
-    if dirn == 'downright':
-        player.attack_move(player.x + 1, player.y + 1, game.world)
+    # Sort by distance
+    enemies_in_range.sort(key=lambda enemy: game.player.distance(enemy))
+    
+    selected_index = 0
+
+    # Get player to choose which enemy
+    while True:
+        selected = enemies_in_range[selected_index]
+
+        # Only draw if on-screen
+        if game.camera.is_visible(selected):
+            screen = game.camera.world_to_screen(selected.x, selected.y)
+            game.window.addch(screen.y, screen.x, ord('X'))
+
+        key = game.window.getkey()
+
+        if key == 'k':
+            if selected_index > 0:
+                selected_index -= 1
+        elif key == 'j':
+            if selected_index < len(enemies_in_range) - 1:
+                selected_index += 1
+        elif key == 'f':
+            queue.append("Fired!!!")
+            break
+        elif key == 'q':
+            return
+
+        # Redraw everything
+        game.draw()
 
 def up_floor(game):
     """ Move the player up a world if they are on an up tile and not on lowest floor. """
@@ -131,6 +149,35 @@ def close_door(game):
         if tile == Tile.door_open:
             game.world.set_tile(*p, tile=Tile.door)
 
+def move(game, dirn):
+    """ Issue a player.attack_move(..) command in the direction given by dirn.
+
+        Where dirn is 'up' for up, 'left' for left, 'upleft' for up left etc.
+    """
+    player = game.player
+
+    # Don't move if dead
+    if player.dead:
+        return
+
+    if dirn == 'up':
+        player.attack_move(player.x, player.y - 1, game.world)
+    if dirn == 'down':
+        player.attack_move(player.x, player.y + 1, game.world)
+    if dirn == 'left':
+        player.attack_move(player.x - 1, player.y, game.world)
+    if dirn == 'right':
+        player.attack_move(player.x + 1, player.y, game.world)
+    if dirn == 'upleft':
+        player.attack_move(player.x - 1, player.y - 1, game.world)
+    if dirn == 'downleft':
+        player.attack_move(player.x - 1, player.y + 1, game.world)
+    if dirn == 'upright':
+        player.attack_move(player.x + 1, player.y - 1, game.world)
+    if dirn == 'downright':
+        player.attack_move(player.x + 1, player.y + 1, game.world)
+
+
 """ Dictionary between the key to enter a given function. """
 key_functions = {'e': views.inventory,
                  'c': views.character,
@@ -138,6 +185,7 @@ key_functions = {'e': views.inventory,
                  '.': wait,
                  '?': views.help_general,
                  'q': quit,
+                 'f': throw,
 
                  '<': up_floor,
                  '>': down_floor,

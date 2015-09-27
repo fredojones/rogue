@@ -77,14 +77,8 @@ class Game(object):
                 return
 
     def update(self):
-        self.camera.draw(self.window, self.world, point=(self.player.x, self.player.y))
-
-        # Draw heads up display
-        views.hud(self)
-
-        # Refresh the messages on screen
-        queue.draw(self.window)
-
+        self.draw()
+        
         key = self.window.getkey()
 
         # Get function depending on key pressed
@@ -96,7 +90,16 @@ class Game(object):
                 return 'quit'
 
         self.world.update(self)
+
+    def draw(self):
+        """ Draw the game world and UI elements. """
         self.window.clear()
+        # Draw heads up display
+        views.hud(self)
+        # Refresh the messages on screen
+        queue.draw(self.window)
+        # Draw the map
+        self.camera.draw(self.window, self.world, point=(self.player.x, self.player.y))
 
     @property
     def world(self):

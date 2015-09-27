@@ -124,6 +124,10 @@ class World(object):
                 result.extend(self.get_entities_at(x + dx, y + dy))
         return result
 
+    def get_entities_of_tag(self, tag):
+        """ Get list of entities with tag `tag`. If none, empty list. """
+        return list(filter(lambda entity: entity.tag == tag, self.entities))
+        
     def get_tiles_surrounding(self, x, y):
         """ Get dict of [(x, y) : Tile] in the 8 squares surrounding x, y. """
         result = {}
