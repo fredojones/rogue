@@ -9,6 +9,7 @@ class Player(Entity):
     def __init__(self, x=0, y=0):
         super().__init__(x, y, tile=Tile.player, solid=True,
                          tag='player', name='player', color_pair=10)
+        self.regeneration = 5
 
     def attack_move(self, x, y, world):
         """ Moves as normal but also attacks enemy if enemy is in square

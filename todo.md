@@ -1,6 +1,12 @@
 TODO
 ====
 
+- Add time system
+  - Add tests for time stuff
+  - Some actions, e.g. inventory, shouldn't pass time
+  - Health regeneration should be based on time passed
+  - Movement should be based on time
+
 - Make up stairs in new worlds correspond with locations of down stairs in previous world
 
 - [DONE] Random chance that generated worlds are "dark", i.e. shorter fov distance, and

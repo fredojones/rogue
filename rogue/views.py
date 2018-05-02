@@ -157,6 +157,7 @@ def hud(game):
 
     game.window.addstr(y + 2, x, bar)
 
+    game.window.addstr(y + 3, x, "time: {}".format(game.world.time))
 
     # Display the current held weapon
     game.window.addstr(y + 4, x, 'right hand: {}'.format(

@@ -30,9 +30,13 @@ def get_loot(game):
 
     corpse.items.clear()
 
+    game.world.tick(1)
+    game.world.update(game)
+
 def wait(game):
     """ Wait for a tick to generate some health. """
-    game.player.add_health(round(game.player.max_health / 10))
+    game.world.tick(1)
+    game.world.update(game)
     queue.append("Rested for 1 tick...")
 
 def quit(game):
@@ -108,6 +112,8 @@ def throw(game):
                 game.player.unequip(thrown_weapon)
                 game.player.remove_item(thrown_weapon)
 
+            game.world.tick(1)
+            game.world.update(game)
             break
         elif key == 'q':
             return
@@ -118,6 +124,8 @@ def throw(game):
 def up_floor(game):
     """ Move the player up a world if they are on an up tile and not on lowest floor. """
     if game.world.get_tile(game.player.x, game.player.y) == Tile.up:
+        game.world.tick(1)
+        game.world.update(game)
         if game.world_index > 0:
             game.world_index -= 1
 
@@ -130,6 +138,8 @@ def up_floor(game):
 def down_floor(game):
     """ Move the player down a world if they are on an down tile and not on highest floor. """
     if game.world.get_tile(game.player.x, game.player.y) == Tile.down:
+        game.world.tick(1)
+        game.world.update(game)
         game.world_index += 1
 
         # Generate new world if it doesn't exist yet
@@ -151,6 +161,8 @@ def down_floor(game):
 def open_door(game):
     """ Open door if player is standing adjacent to it (can also be done
         by walking into the door). """
+    game.world.tick(1)
+    game.world.update(game)
     tiles = game.world.get_tiles_surrounding(game.player.x, game.player.y)
 
     for p, tile in tiles.items():
@@ -159,6 +171,8 @@ def open_door(game):
 
 def close_door(game):
     """ Close door if player is standing adjacent to it. """
+    game.world.tick(1)
+    game.world.update(game)
     tiles = game.world.get_tiles_surrounding(game.player.x, game.player.y)
 
     for p, tile in tiles.items():
@@ -193,31 +207,35 @@ def move(game, dirn):
     if dirn == 'downright':
         player.attack_move(player.x + 1, player.y + 1, game.world)
 
+    game.world.tick(1)
+    game.world.update(game)
 
 """ Dictionary between the key to enter a given function. """
-key_functions = {'e': views.inventory,
-                 'c': views.character,
-                 ';': get_loot,
-                 '.': wait,
-                 '?': views.help_general,
-                 'q': quit,
-                 'f': throw,
+key_functions = {
+    'e': views.inventory,
+    'c': views.character,
+    ';': get_loot,
+    '.': wait,
+    '?': views.help_general,
+    'q': quit,
+    'f': throw,
 
-                 '<': up_floor,
-                 '>': down_floor,
+    '<': up_floor,
+    '>': down_floor,
 
-                 'O': open_door,
-                 'C': close_door,
+    'O': open_door,
+    'C': close_door,
 
-                 'k':         partial(move, dirn='up'),
-                 'KEY_UP':    partial(move, dirn='up'),
-                 'j':         partial(move, dirn='down'),
-                 'KEY_DOWN':  partial(move, dirn='down'),
-                 'h':         partial(move, dirn='left'),
-                 'KEY_LEFT':  partial(move, dirn='left'),
-                 'l':         partial(move, dirn='right'),
-                 'KEY_RIGHT': partial(move, dirn='right'),
-                 'y':         partial(move, dirn='upleft'),
-                 'b':         partial(move, dirn='downleft'),
-                 'u':         partial(move, dirn='upright'),
-                 'n':         partial(move, dirn='downright')}
+    'k':         partial(move, dirn='up'),
+    'KEY_UP':    partial(move, dirn='up'),
+    'j':         partial(move, dirn='down'),
+    'KEY_DOWN':  partial(move, dirn='down'),
+    'h':         partial(move, dirn='left'),
+    'KEY_LEFT':  partial(move, dirn='left'),
+    'l':         partial(move, dirn='right'),
+    'KEY_RIGHT': partial(move, dirn='right'),
+    'y':         partial(move, dirn='upleft'),
+    'b':         partial(move, dirn='downleft'),
+    'u':         partial(move, dirn='upright'),
+    'n':         partial(move, dirn='downright')
+}

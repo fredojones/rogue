@@ -10,17 +10,14 @@ class World(object):
     Attributes:
     width -- width of the game world
     height -- same for height
-
     tiles -- dictionary holding the information about tiles in the game
              keys: tuple (x, y) denoting position
              values: Tile object representing tile at that point
-
     tiles_seen -- set of (x, y) points that have been seen at some point,
                   tiles at these points will be rendered in grey.
-
     entities -- list of Entity object in the world
-
     dark -- true if the world is dark, i.e. shorter "render" distance
+    time -- current world time
     """
 
     def __init__(self, width, height, default_tile=Tile.clear, dark=False):
@@ -30,6 +27,8 @@ class World(object):
         self.dark = dark
         self.tiles_seen = set()
         self.entities = []
+        self.time = 0
+        self.previous_time = 0
 
     def set_tile(self, x, y, tile):
         """ Set tile at x, y to tile.
@@ -154,6 +153,14 @@ class World(object):
         """
         for (i, j), tile in room.items():
             self.set_tile(i + x, j + y, tile)
+
+    def tick(self, dt):
+        self.previous_time = self.time
+        self.time += dt
+
+    @property
+    def delta_t(self):
+        return self.time - self.previous_time
 
     def update(self, game):
         """ Update the world and all entities in it.

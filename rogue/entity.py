@@ -35,6 +35,8 @@ class Entity(object):
 
     defense -- defensive power of entity
 
+    regeneration -- regen per tick
+
     items -- list of items held by entity
     equipment -- dictionary of equipped items {"slot": Item}
     """
@@ -68,6 +70,7 @@ class Entity(object):
 
         self.attack = 10
         self.defense = 6
+        self.regeneration = 1
 
         self.items = []
         self.equipment = {}
@@ -163,6 +166,9 @@ class Entity(object):
         game -- current Game object representing game state
         key -- key pressed this frame
         """
+        # Generate health based on time change
+        self.add_health(game.world.delta_t * self.regeneration)
+
         # Turn into corpse if entity dies
         if self.health <= 0:
             self.die()
