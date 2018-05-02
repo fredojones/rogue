@@ -16,7 +16,21 @@ class Enemy(Entity):
         Enemy will move directly towards the player with some chance.
         """
 
-        # Make sure within range of player
+        # Attack player if in range
+        for entity in game.world.get_entities_surrounding(self.x, self.y):
+            if entity.tag == 'player':
+                # Deal damage to the player
+                damage = self.calculate_damage(entity)
+                entity.add_health(-damage)
+
+                queue.append("{} hit player with {} for {} hp!".format(self.name,
+                    self.get_slot("right hand").name, damage))
+
+                if entity.health <= 0:
+                    entity.die()
+                    queue.append("You die...")
+
+        # Make sure within range of player before moving towards them
         if self.distance(game.player) < 6:
             # Random each direction
             if random.random() > 0.3:
@@ -32,19 +46,5 @@ class Enemy(Entity):
                 if game.player.y < self.y:
                     self.move(self.x, self.y - 1, game.world)
 
-        # Attack player if in range
-        for entity in game.world.get_entities_surrounding(self.x, self.y):
-            if entity.tag == 'player':
-                # Deal damage to the player
-                damage = self.calculate_damage(entity)
-                entity.add_health(-damage)
-
-                queue.append("{} hit player with {} for {} hp!".format(self.name,
-                    self.get_slot("right hand").name, damage))
-
-                if entity.health <= 0:
-                    entity.die()
-                    queue.append("You die...")
 
         super().update(game)
-
