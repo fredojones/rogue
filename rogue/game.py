@@ -94,7 +94,7 @@ class Game(object):
             if res == 'quit':
                 return 'quit'
 
-        self.world.update(self)
+            self.world.update(self)
 
     def draw(self):
         """ Draw the game world and UI elements. """
