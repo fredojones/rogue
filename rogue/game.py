@@ -37,7 +37,7 @@ class Game(object):
                 room_x = 500, room_y = 500)
 
         # Make first world always light
-        self.worlds[0].dark = True
+        self.worlds[0].dark = False
 
         self.camera = Camera()
 
