@@ -17,36 +17,37 @@ class Player(Entity):
         """
         # TODO: move this code to be entity generic
         # Deal damage if moving into enemy
-        entity = world.get_entity_at(x, y)
-        if entity is not None and entity.tag == 'enemy':
-            # Player deals damage
-            damage = self.calculate_damage(entity)
-            entity.add_health(-damage)
-            queue.append("hit {} with {} for {} hp!".format(entity.name,
-                self.get_slot("right hand").name, damage))
+        entities = world.get_entities_at(x, y)
+        for entity in entities:
+            if entity.tag == "enemy":
+                # Player deals damage
+                damage = self.calculate_damage(entity)
+                entity.add_health(-damage)
+                queue.append("hit {} with {} for {} hp!".format(entity.name,
+                    self.get_slot("right hand").name, damage))
 
-            # Entity dies
-            if entity.health <= 0:
-                # Prevent entity from attacking on its last turn (i.e. while dead)
-                entity.die()
+                # Entity dies
+                if entity.health <= 0:
+                    # Prevent entity from attacking on its last turn (i.e. while dead)
+                    entity.die()
 
-                exp = random.randint(15, 250)
-                queue.append("gained {} exp".format(exp))
+                    exp = random.randint(15, 250)
+                    queue.append("gained {} exp".format(exp))
 
-                # Check if player has leveled up
-                old_level = self.level()
-                self.exp += exp
+                    # Check if player has leveled up
+                    old_level = self.level()
+                    self.exp += exp
 
-                if self.level() > old_level:
-                    self.max_health += 10
-                    self.health = self.max_health
-                    queue.append("ding! You are now level {}".format(self.level()))
+                    if self.level() > old_level:
+                        self.max_health += 10
+                        self.health = self.max_health
+                        queue.append("ding! You are now level {}".format(self.level()))
 
-            # New line between each message
-            queue.append('\n')
+                # New line between each message
+                queue.append('\n')
+                return
 
-        else:
-            self.move(x, y, world)
+        self.move(x, y, world)
 
     def update(self, game):
         """ Update the game for the player.
